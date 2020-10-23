@@ -84,6 +84,7 @@ setup_str += "\tauthor='{}',\n".format(author_name)
 setup_str += "\tauthor_email='{}',\n".format(author_mail)
 setup_str += "\tinstall_requires={},\n".format(requirements)
 setup_str += "\tpython_requires='{}',\n".format(python_version)
+setup_str += "\tpackages=find_packages(),\n"
 setup_str += ")"
 
 setup_file.write(setup_str)
