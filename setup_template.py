@@ -11,11 +11,4 @@ def readme():
         return f.read()
 
 
-def get_version():
-    # Return the version if it has been injected into the file by git-archive
-    version = tag_re.search('$Format:%D$')
-    if version:
-        return version.group(1)
-    return ''
-
 

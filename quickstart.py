@@ -76,7 +76,7 @@ if not python_version:
     python_version = ">=3.8"
 
 setup_str = "\n\nsetup(\n"
-setup_str += "\tversion=get_version(),\n"
+setup_str += "\tversion='0.0.0',\n"
 setup_str += "\tname='{}',\n".format(package_name)
 setup_str += "\tdescription='{}',\n".format(short_description)
 setup_str += "\tlong_description=readme(),\n"
