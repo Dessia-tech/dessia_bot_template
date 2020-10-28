@@ -4,8 +4,14 @@ from typing import Tuple
 import shutil
 import subprocess
 
-if os.path.exists('setup.py') and not os.path.isdir('setup.py'):
-    sys.exit('setup.py already exist in this directory. \nQuickstart aborted.')
+from pathlib import Path
+parent_folder = Path(os.getcwd()).parent
+
+base_folder = input("Select folder in which the project will be generated (default: {}): ".format(parent_folder))
+if not base_folder:
+    base_folder = parent_folder
+print('Project will be created in folder {}'.format(base_folder))
+
 
 
 def has_special_char(string: str) -> Tuple[bool, str]:
@@ -46,21 +52,38 @@ def enter_valid_name(target: str, default: str = None):
 
 
 package_name = enter_valid_name('Package')
+project_path = os.path.join(base_folder, package_name)
+if os.path.exists(project_path):
+    raise ValueError('Package path {} already exists, aborting'.format(package_path)) 
+
+os.mkdir(project_path)
+
+package_path = os.path.join(project_path, package_name)
+os.mkdir(package_path)
+
+
+
+setup_path = os.path.join(project_path, 'setup.py')
+scripts_path = os.path.join(project_path, 'scripts')
+
+
 module_name = enter_valid_name('Module', 'core')
 if not module_name:
     module_name = 'core'
 
-shutil.copyfile('setup_template.py', 'setup.py')
 
-if not (os.path.exists(package_name) and os.path.isdir(package_name)):
-    os.mkdir(package_name)
-os.mkdir('scripts')
+shutil.copyfile('setup_template.py', setup_path)
 
-init_file = open('{}/__init__.py'.format(package_name), 'x+')
+os.mkdir(scripts_path)
+
+init_path = os.path.join(package_path, '__init__.py')
+init_file = open(init_path, 'x+')
 init_file.write("from .{} import *".format(module_name))
-module_file = open('{}/{}.py'.format(package_name, module_name), 'x+')
+
+module_path = os.path.join(package_path, '{}.py'.format(module_name)) 
+module_file = open(module_path, 'x+')
 module_file.write("is_created = True")
-setup_file = open('setup.py'.format(package_name), 'a+')
+setup_file = open(setup_path, 'a+')
 
 short_description = input('Enter a short description : ')
 author_name = input('Enter your name : ')
@@ -75,8 +98,15 @@ else:
 if not python_version:
     python_version = ">=3.8"
 
+from_git_tags = input('Do you want to enable version from git tags? (Y/n): ')
+
+
 setup_str = "\n\nsetup(\n"
-setup_str += "\tversion='0.0.0',\n"
+if from_git_tags == 'N':
+    setup_str += "\tversion='0.0.1',\n"
+else:
+    setup_str += "\tversion=get_version(),\n"
+
 setup_str += "\tname='{}',\n".format(package_name)
 setup_str += "\tdescription='{}',\n".format(short_description)
 setup_str += "\tlong_description=readme(),\n"
@@ -88,3 +118,4 @@ setup_str += "\tpackages=find_packages(),\n"
 setup_str += ")"
 
 setup_file.write(setup_str)
+print('Project generated to {}'.format(project_path))
