@@ -54,12 +54,16 @@ def enter_valid_name(target: str, default: str = None):
 package_name = enter_valid_name('Package')
 project_path = os.path.join(base_folder, package_name)
 if os.path.exists(project_path):
-    raise ValueError('Package path {} already exists, aborting'.format(package_path)) 
-
-os.mkdir(project_path)
+    confirm = input('the folder {} already exists. Confirm to use existing folder (y/N): '.format(project_path))
+    if confirm.lower() not in ['y', 'yes']:
+        raise ValueError('Aborting in using existing folder')
+else:
+    os.mkdir(project_path)
 
 package_path = os.path.join(project_path, package_name)
-os.mkdir(package_path)
+
+if not os.path.exists(package_path):
+    os.mkdir(package_path)
 
 
 
@@ -74,16 +78,23 @@ if not module_name:
 
 shutil.copyfile('setup_template.py', setup_path)
 
-os.mkdir(scripts_path)
+if not os.path.exists(scripts_path):
+    os.mkdir(scripts_path)
 
 init_path = os.path.join(package_path, '__init__.py')
-init_file = open(init_path, 'x+')
-init_file.write("from .{} import *".format(module_name))
+if not os.path.exists(init_path):
+    init_file = open(init_path, 'x+')
+    init_file.write("from .{} import *".format(module_name))
+else:
+    print('__init__.py already exists, skipping creation') 
+
 
 module_path = os.path.join(package_path, '{}.py'.format(module_name)) 
-module_file = open(module_path, 'x+')
-module_file.write("is_created = True")
-setup_file = open(setup_path, 'a+')
+if not os.path.exists(module_path):
+    module_file = open(module_path, 'x+')
+    module_file.write("is_created = True")
+else:
+    print('base python module already exists, skipping creation') 
 
 short_description = input('Enter a short description : ')
 author_name = input('Enter your name : ')
@@ -100,7 +111,7 @@ if not python_version:
 
 from_git_tags = input('Do you want to enable version from git tags? (Y/n): ')
 
-
+# Writing file
 setup_str = "\n\nsetup(\n"
 if from_git_tags == 'N':
     setup_str += "\tversion='0.0.1',\n"
@@ -117,5 +128,8 @@ setup_str += "\tpython_requires='{}',\n".format(python_version)
 setup_str += "\tpackages=find_packages(),\n"
 setup_str += ")"
 
+setup_file = open(setup_path, 'a+')
 setup_file.write(setup_str)
+
+
 print('Project generated to {}'.format(project_path))
