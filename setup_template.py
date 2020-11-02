@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 import re
 from os.path import dirname, isdir, join
+from subprocess import CalledProcessError, check_output
 
 tag_re = re.compile(r'\btag: %s([0-9][^,]*)\b')
 version_re = re.compile('^Version: (.+)$', re.M)
