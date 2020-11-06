@@ -7,6 +7,8 @@ import subprocess
 from pathlib import Path
 parent_folder = Path(os.getcwd()).parent
 
+
+
 base_folder = input("Select folder in which the project will be generated (default: {}): ".format(parent_folder))
 if not base_folder:
     base_folder = parent_folder
@@ -65,6 +67,11 @@ package_path = os.path.join(project_path, package_name)
 if not os.path.exists(package_path):
     os.mkdir(package_path)
 
+assets_path = os.path.join(package_path, 'assets')
+if not os.path.exists(assets_path):
+    os.mkdir(assets_path)
+
+shutil.copyfile('logo.png', os.path.join(assets_path, 'logo.png'))
 
 
 setup_path = os.path.join(project_path, 'setup.py')
