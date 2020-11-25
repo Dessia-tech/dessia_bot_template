@@ -91,7 +91,9 @@ if not os.path.exists(scripts_path):
 init_path = os.path.join(package_path, '__init__.py')
 if not os.path.exists(init_path):
     init_file = open(init_path, 'x+')
-    init_file.write("from .{} import *".format(module_name))
+    init_file.writelines(["import pkg_ressources\n", 
+                          "from .{} import *\n".format(module_name),
+                          '__version__ = pkg_resources.require("{}")[0].version\n'.format(package_name)])
 else:
     print('__init__.py already exists, skipping creation') 
 
