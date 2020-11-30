@@ -71,7 +71,7 @@ assets_path = os.path.join(package_path, 'assets')
 if not os.path.exists(assets_path):
     os.mkdir(assets_path)
 
-shutil.copyfile('logo.png', os.path.join(assets_path, 'logo.png'))
+shutil.copyfile('logo.png', os.path.join(assets_path, '{}.png'.format(package_name)))
 
 
 setup_path = os.path.join(project_path, 'setup.py')
