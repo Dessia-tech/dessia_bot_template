@@ -108,10 +108,11 @@ else:
 short_description = input('Enter a short description : ')
 author_name = input('Enter your name : ')
 author_mail = input('Enter your e-mail : ')
-requirements = input("Enter required packages, separated by a coma (default : ['dessia_common'])")
+default_requirements = ['dessia_common>=0.4.0', 'volmdlr>=0.2.0']
+requirements = input("Enter required packages, separated by a coma (default : {})".format(default_requirements))
 python_version = input('Enter Python version (default : >=3.8) : ')
 if not requirements:
-    requirements = ['dessia_common']
+    requirements = default_requirements
 else:
     requirements = requirements.split(',')
 
@@ -122,7 +123,7 @@ from_git_tags = input('Do you want to enable version from git tags? (Y/n): ')
 
 # Writing file
 setup_str = "\n\nsetup(\n"
-if from_git_tags == 'N':
+if from_git_tags.lower() == 'n':
     setup_str += "\tversion='0.0.1',\n"
 else:
     setup_str += "\tversion=get_version(),\n"
@@ -139,6 +140,12 @@ setup_str += ")"
 
 setup_file = open(setup_path, 'a+')
 setup_file.write(setup_str)
+
+create_gitignore = input('Do you want to create a python gitignore file? (Y/n): ')
+create_gitignore = create_gitignore.lower() != 'n'
+
+if create_gitignore:
+    shutil.copyfile('python.gitignore', os.path.join(project_path, '.gitignore'))
 
 
 print('Project generated to {}'.format(project_path))
