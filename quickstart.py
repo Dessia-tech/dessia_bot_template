@@ -43,7 +43,7 @@ def enter_valid_name(target: str, default: str = None):
         if not valid_name:
             n_retries += 1
             msg = '{} name is not valid.\n'.format(target)
-            msg += ' It must not contain caps nor special characters '
+            msg += 'It must not contain caps nor special characters apart from "_"'
             msg += 'and must be longer than 3 characters.\n'
             msg += 'Please retry. ({}/10)'.format(n_retries)
             print(msg)
