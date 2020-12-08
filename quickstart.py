@@ -7,13 +7,10 @@ import subprocess
 from pathlib import Path
 parent_folder = Path(os.getcwd()).parent
 
-
-
 base_folder = input("Select folder in which the project will be generated (default: {}): ".format(parent_folder))
 if not base_folder:
     base_folder = parent_folder
 print('Project will be created in folder {}'.format(base_folder))
-
 
 
 def has_special_char(string: str) -> Tuple[bool, str]:
@@ -76,7 +73,6 @@ shutil.copyfile('logo.png', os.path.join(assets_path, '{}.png'.format(package_na
 
 setup_path = os.path.join(project_path, 'setup.py')
 scripts_path = os.path.join(project_path, 'scripts')
-
 
 module_name = enter_valid_name('Module', 'core')
 if not module_name:
@@ -141,11 +137,20 @@ setup_str += ")"
 setup_file = open(setup_path, 'a+')
 setup_file.write(setup_str)
 
+
 create_gitignore = input('Do you want to create a python gitignore file? (Y/n): ')
 create_gitignore = create_gitignore.lower() != 'n'
 
+create_readme = input('Do you want to create a README file? (Y/n): ')
+create_readme = create_readme.lower() != 'n'
+
+readme_path = os.path.join(project_path, 'README.md')
+if create_readme:
+    shutil.copyfile('README.template', readme_path)
+
+gitignore_path = os.path.join(project_path, '.gitignore')
 if create_gitignore:
-    shutil.copyfile('python.gitignore', os.path.join(project_path, '.gitignore'))
+    shutil.copyfile('python.gitignore', gitignore_path)
 
 
 print('Project generated to {}'.format(project_path))
