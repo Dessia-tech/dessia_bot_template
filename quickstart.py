@@ -1,4 +1,5 @@
 import os
+import string
 import sys
 from typing import Tuple
 import shutil
@@ -8,6 +9,29 @@ from pathlib import Path
 parent_folder = Path(os.getcwd()).parent
 
 
+manifest_template = string.Template('''
+recursive-include $package_name/assets *.html *.js *ts *jpg *png
+recursive-include scripts *py
+prune .git
+''')
+
+default_module_content = '''#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Documentation of module goes here
+"""
+
+import dessia_common as dc
+
+'''
+
+print('=======================')
+print(' DessiA Bot quickstart')
+print('=======================\n')
+print('This script will generate for you the files needed to create a python package respecting DessiA guidelines.')
+print("If you don't understand a question or have no preference just type enter to have the default choice selected.\n")
+input('Type any key to begin the process...')
 
 base_folder = input("Select folder in which the project will be generated (default: {}): ".format(parent_folder))
 if not base_folder:
@@ -101,7 +125,7 @@ else:
 module_path = os.path.join(package_path, '{}.py'.format(module_name)) 
 if not os.path.exists(module_path):
     module_file = open(module_path, 'x+')
-    module_file.write("is_created = True")
+    module_file.write(default_module_content)
 else:
     print('base python module already exists, skipping creation') 
 
@@ -146,6 +170,11 @@ create_gitignore = create_gitignore.lower() != 'n'
 
 if create_gitignore:
     shutil.copyfile('python.gitignore', os.path.join(project_path, '.gitignore'))
+
+manifest_path = os.path.join(project_path, 'MANIFEST.in'))
+if not os.path.exists(manifest_path):
+    with open(manifest_path, 'w') as f:
+        f.write(manifest_template.substitute(package_name=package_name)
 
 
 print('Project generated to {}'.format(project_path))
