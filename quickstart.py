@@ -11,6 +11,7 @@ parent_folder = Path(os.getcwd()).parent
 
 manifest_template = string.Template('''recursive-include $package_name/assets *.html *.js *ts *jpg *png
 recursive-include scripts *py
+recursive-include $package_name/models *py
 prune .git
 ''')
 
