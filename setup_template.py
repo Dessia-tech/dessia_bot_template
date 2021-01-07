@@ -81,7 +81,7 @@ def get_version():
             version = check_output(cmd.split()).decode().strip()[:]
 
         except CalledProcessError:
-            raise RuntimeError('Unable to get version number from git tags')
+            raise RuntimeError('Unable to get version number from git tags: create a first v0.0.1 version to start!')
 
         return version_from_git_describe(version)
     
@@ -90,6 +90,7 @@ def get_version():
         with open(pkg_info_path, 'r') as f:
             version = version_re.search(f.read()).group(1)
     else:
+        print('No version found from git tags nor from PKGINFO. defaulting to 0.0.1') 
         version='0.0.1'
 
     return version
