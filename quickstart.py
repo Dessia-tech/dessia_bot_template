@@ -59,7 +59,7 @@ base_folder = input("Select folder in which the project will be generated (defau
 if not base_folder:
     base_folder = parent_folder
 else:
-    if not os.exists(base_folder):
+    if not os.path.exists(base_folder):
         print('Creating base folder as it does not exists')
         os.makedirs(base_folder)
 print('Project will be created in folder {}'.format(base_folder))
