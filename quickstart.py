@@ -176,7 +176,7 @@ else:
 short_description = input('Enter a short description : ')
 author_name = input('Enter your name : ')
 author_mail = input('Enter your e-mail : ')
-default_requirements = ['dessia_common>=0.4.0', 'volmdlr>=0.2.0']
+default_requirements = ['dessia_common>=0.4.6', 'volmdlr>=0.2.9']
 requirements = input("Enter required packages, separated by a coma (default : {})".format(default_requirements))
 python_version = input('Enter Python version (default : >=3.8) : ')
 if not requirements:
