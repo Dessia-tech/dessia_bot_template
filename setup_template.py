@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 import re
-from os.path import dirname, isdir, join
+from os.path import dirname, isdir, join, exists
 from subprocess import CalledProcessError, check_output
 
 tag_re = re.compile(r'\btag: %s([0-9][^,]*)\b')
@@ -73,6 +73,7 @@ def get_version():
         return version.group(1)
 
     d = dirname(__file__)
+    pkg_info_path = join(d, 'PKG-INFO')
 
     if isdir(join(d, '.git')):
         cmd = 'git describe --tags'
@@ -80,13 +81,17 @@ def get_version():
             version = check_output(cmd.split()).decode().strip()[:]
 
         except CalledProcessError:
-            raise RuntimeError('Unable to get version number from git tags')
+            raise RuntimeError('Unable to get version number from git tags: create a first v0.0.1 version to start!')
 
         return version_from_git_describe(version)
-    else:
-        # Extract the version from the PKG-INFO file.
-        with open(join(d, 'PKG-INFO')) as f:
+    
+    elif exists(pkg_info_path):
+        # try to extract the version from the PKG-INFO file.
+        with open(pkg_info_path, 'r') as f:
             version = version_re.search(f.read()).group(1)
+    else:
+        print('No version found from git tags nor from PKGINFO. defaulting to 0.0.1') 
+        version='0.0.1'
 
     return version
 

@@ -9,7 +9,7 @@ from pathlib import Path
 parent_folder = Path(os.getcwd()).parent
 
 
-manifest_template = string.Template('''recursive-include $package_name/assets *.html *.js *ts *jpg *png
+manifest_template = string.Template('''recursive-include $package_name/assets *.html *.js *ts *.jpg *.png
 recursive-include scripts *.py
 recursive-include $package_name/models *.py
 prune .git
@@ -52,18 +52,10 @@ print('=======================')
 print(' DessiA Bot quickstart')
 print('=======================\n')
 print('This script will generate for you the files needed to create a python package respecting DessiA guidelines.')
-print("If you don't understand a question or have no preference just type enter to have the default choice selected.\n")
+print("If you don't understand a question or have no preference just type enter to have the default choice selected.")
+print('Most questions have to be answered with y=yes or n=no. Default value if nothing is answered is written in capital\n')
 input('Type any key to begin the process...')
 print('')
-
-base_folder = input("Select folder in which the project will be generated (default: {}): ".format(parent_folder))
-if not base_folder:
-    base_folder = parent_folder
-else:
-    if not os.exists(base_folder):
-        print('Creating base folder as it does not exists')
-        os.makedirs(base_folder)
-print('Project will be created in folder {}'.format(base_folder))
 
 
 def has_special_char(string: str) -> Tuple[bool, str]:
@@ -104,13 +96,40 @@ def enter_valid_name(target: str, default: str = None):
 
 
 package_name = enter_valid_name('Package')
-project_path = os.path.join(base_folder, package_name)
-if os.path.exists(project_path):
-    confirm = input('the folder {} already exists. Confirm to use existing folder (y/N): '.format(project_path))
-    if confirm.lower() not in ['y', 'yes']:
-        raise ValueError('Aborting in using existing folder')
+
+git_use = input('Do you want to use git in this project (eventually through a service like Github, Gitlab, Gitea, Gogs)?: (Y/n)')
+git_use = git_use.lower() != 'n'
+if git_use:
+    done = input('Create a repository on your service (Github, Gitlab, Gitea, Gogs) and clone it on your computer. Press enter when done')
+    git_detected = False
+    while not git_detected:
+        project_path = input('Where is the git repo folder? current folder: {} :'.format(parent_folder))
+        if not os.path.isabs(project_path):
+            project_path = os.path.join(parent_folder, project_path)
+            git_folder = os.path.join(project_path, '.git')
+            if os.path.isdir(git_folder):
+                print('{} is a valid git repo'.format(project_path))
+                git_detected = True
+            else:
+                print('No .git subfolder found in {}. Please retry.'.format(project_path))
+
 else:
-    os.mkdir(project_path)
+    base_folder = input("Select parent folder in which the project will be generated (default: {}): ".format(parent_folder))
+    if not base_folder:
+        base_folder = parent_folder
+    else:
+        if not os.path.exists(base_folder):
+            print('Creating base folder as it does not exists')
+            os.makedirs(base_folder)
+    print('Project will be created in folder {}'.format(base_folder))
+    project_path = os.path.join(base_folder, package_name)
+
+    if os.path.exists(project_path):
+        confirm = input('the folder {} already exists. Confirm to use existing folder (y/N): '.format(project_path))
+        if confirm.lower() not in ['y', 'yes']:
+            raise ValueError('Aborting in using existing folder')
+    else:
+        os.mkdir(project_path)
 
 package_path = os.path.join(project_path, package_name)
 
@@ -140,7 +159,7 @@ if not os.path.exists(scripts_path):
 init_path = os.path.join(package_path, '__init__.py')
 if not os.path.exists(init_path):
     init_file = open(init_path, 'x+')
-    init_file.writelines(["import pkg_ressources\n", 
+    init_file.writelines(["import pkg_resources\n", 
                           "from .{} import *\n".format(module_name),
                           '__version__ = pkg_resources.require("{}")[0].version\n'.format(package_name)])
 else:
