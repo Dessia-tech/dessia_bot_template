@@ -1,52 +1,14 @@
 import os
-import string
-import sys
 from typing import Tuple
 import shutil
-import subprocess
 
 from pathlib import Path
+
+from templates import manifest_template, readme_template, default_module_content, drone_template, test_template,\
+                        code_quality_template, code_pep8_template, code_pylint_template
+
 parent_folder = Path(os.getcwd()).parent
 
-
-manifest_template = string.Template('''recursive-include $package_name/assets *.html *.js *ts *.jpg *.png
-recursive-include scripts *.py
-recursive-include $package_name/models *.py
-prune .git
-''')
-
-readme_template = string.Template('''# $package_name
-
-$package_name is a Python package using DessiA SDK and DessiA coding guidelines (https://documentation.dessia.tech)
-
-$short_description
-
-author: $author
-
-## Installation
-
-Move to the folder to next to setup.py and 
-```bash
-python setup.py install
-```
-
-## Usage
-
-''')
-
-
-default_module_content = '''#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-"""
-Documentation of module goes here
-"""
-
-import dessia_common as dc
-import volmdlr as vm
-import volmdlr.primitives3d as p3d
-
-'''
 
 print('=======================')
 print(' DessiA Bot quickstart')
@@ -103,15 +65,17 @@ if git_use:
     done = input('Create a repository on your service (Github, Gitlab, Gitea, Gogs) and clone it on your computer. Press enter when done')
     git_detected = False
     while not git_detected:
-        project_path = input('Where is the git repo folder? current folder: {} :'.format(parent_folder))
+        project_path = input('Where is the git repo folder? current folder: {}: '.format(parent_folder))
         if not os.path.isabs(project_path):
             project_path = os.path.join(parent_folder, project_path)
-            git_folder = os.path.join(project_path, '.git')
-            if os.path.isdir(git_folder):
-                print('{} is a valid git repo'.format(project_path))
-                git_detected = True
-            else:
-                print('No .git subfolder found in {}. Please retry.'.format(project_path))
+        git_folder = os.path.join(project_path, '.git')
+        if os.path.isdir(git_folder):
+            print('{} is a valid git repo'.format(project_path))
+            git_detected = True
+        else:
+            print('No .git subfolder found in {} Please retry.'.format(project_path))
+
+
 
 else:
     base_folder = input("Select parent folder in which the project will be generated (default: {}): ".format(parent_folder))
@@ -210,9 +174,55 @@ if create_readme:
             short_description=short_description,
             ))
 
+# Tests
+tests_dir = os.path.join(project_path, 'tests')
+if not os.path.exists(tests_dir):
+    os.mkdir(tests_dir)
+
+for test_filename in ['coverage.py', 'ci_tests.py']:
+    test_file_path = os.path.join(tests_dir, test_filename)
+    shutil.copyfile(test_filename, test_file_path)
+
+test_path = os.path.join(tests_dir, 'test.py')
+with open(test_path, 'w') as f:
+    f.write(test_template.substitute(
+        package_name=package_name,
+        ))
 
 
-# Writing file
+# Code quality
+code_quality = input('Do you want to have some code quality checks? (Y/n): ')
+code_quality = code_quality.lower() != 'n'
+
+if code_quality:
+    for filename in ['.pep8', '.pylintrc']:        
+        cq_path = os.path.join(project_path, filename)
+        shutil.copyfile(filename, cq_path)
+    
+    for code_quality_filename, template_name in [('code_pep8.sh', code_pep8_template),
+                                                 ('code_quality.sh', code_quality_template),
+                                                 ('code_pylint.py', code_pylint_template)]:
+        # cq_path = os.path.join(package_path, code_quality_filename)
+        # shutil.copyfile(code_quality_filename, cq_path)
+        with open(os.path.join(project_path, code_quality_filename), 'w') as f:
+            f.write(template_name.substitute(
+                package_name=package_name,
+                ))
+
+
+
+
+# CI
+drone = input('Do you want to generate a .drone.yml file for drone.io CI? (Y/n): ')
+drone = drone.lower() != 'n'
+
+if drone:
+    drone_path = os.path.join(package_path, '.drone.yml')
+    with open(drone_path, 'w') as f:
+        f.write(drone_template.substitute(
+            package_name=package_name))
+
+# Writing setup file
 setup_str = "\n\nsetup(\n"
 if from_git_tags.lower() == 'n':
     setup_str += "\tversion='0.0.1',\n"
