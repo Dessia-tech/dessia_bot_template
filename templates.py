@@ -120,9 +120,20 @@ fi;
 
 code_pylint_template = string.Template('''
 
+"""
+Read pylint errors to see if number of errors does not exceed specified limits
+v1.0
+"""
+
 from pylint.lint import Run
 
-MIN_NOTE = 8.4
+MIN_NOTE = 8.85
+
+UNWATCHED_ERRORS = ['fixme',
+                    'trailing-whitespace',
+                    'import-error'
+                    ]
+
 
 MAX_ERROR_BY_TYPE = {
                      # No tolerance errors
@@ -186,7 +197,7 @@ f = open(os.devnull, 'w')
 old_stdout = sys.stdout
 sys.stdout = f
 
-results = Run(['$package_name', '--output-format=json', '--reports=no'], do_exit=False)
+results = Run(['dessia_common', '--output-format=json', '--reports=no'], do_exit=False)
 # `exit` is deprecated, use `do_exit` instead
 sys.stdout = old_stdout
 
@@ -208,7 +219,7 @@ def extract_messages_by_type(type_):
     return [m for m in results.linter.reporter.messages if m.symbol == type_]
 
 
-uncontrolled_errors = {}
+# uncontrolled_errors = {}
 error_detected = False
 
 if PYLINT_OBJECT_STATS:
@@ -217,28 +228,27 @@ else:
     stats_by_msg = results.linter.stats['by_msg']
 
 for error_type, number_errors in stats_by_msg.items():
-    if error_type in MAX_ERROR_BY_TYPE:
-        if number_errors > MAX_ERROR_BY_TYPE[error_type]:
+    if error_type not in UNWATCHED_ERRORS:
+        if error_type in MAX_ERROR_BY_TYPE:
+            max_errors = MAX_ERROR_BY_TYPE[error_type]
+        else:
+            max_errors = 0
+            
+        if number_errors > max_errors:
             error_detected = True
             print('Fix some {} errors: {}/{}'.format(error_type,
                                                      number_errors,
-                                                     MAX_ERROR_BY_TYPE[error_type]))
+                                                     max_errors))
             for message in extract_messages_by_type(error_type):
                 print('{} line {}: {}'.format(message.path, message.line, message.msg))
-        elif number_errors < MAX_ERROR_BY_TYPE[error_type]:
+        elif number_errors < max_errors:
             print('You can lower number of {} to {} (actual {})'.format(
-                error_type, number_errors, MAX_ERROR_BY_TYPE[error_type]))
+                error_type, number_errors, max_errors))
 
-    else:
-        if not error_type in uncontrolled_errors:
-            uncontrolled_errors[error_type] = number_errors
-
-if uncontrolled_errors:
-    print('Uncontrolled errors', uncontrolled_errors)
 
 if error_detected:
-    raise RuntimeError('Too many errors, run pylint dessia_common to get the errors')
-
+    raise RuntimeError('Too many errors\nRun pylint dessia_common to get the errors')
+    
 ''')
 
 code_pep8_template = string.Template('''#!/bin/bash
