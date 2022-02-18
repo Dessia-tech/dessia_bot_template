@@ -197,7 +197,7 @@ f = open(os.devnull, 'w')
 old_stdout = sys.stdout
 sys.stdout = f
 
-results = Run(['dessia_common', '--output-format=json', '--reports=no'], do_exit=False)
+results = Run(['$package_name', '--output-format=json', '--reports=no'], do_exit=False)
 # `exit` is deprecated, use `do_exit` instead
 sys.stdout = old_stdout
 
@@ -247,7 +247,7 @@ for error_type, number_errors in stats_by_msg.items():
 
 
 if error_detected:
-    raise RuntimeError('Too many errors\nRun pylint dessia_common to get the errors')
+    raise RuntimeError('Too many errors\nRun pylint $package_name to get the errors')
     
 ''')
 

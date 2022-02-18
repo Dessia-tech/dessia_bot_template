@@ -210,8 +210,6 @@ if code_quality:
                 ))
 
 
-
-
 # CI
 drone = input('Do you want to generate a .drone.yml file for drone.io CI? (Y/n): ')
 drone = drone.lower() != 'n'
