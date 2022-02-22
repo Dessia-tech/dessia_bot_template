@@ -215,7 +215,7 @@ drone = input('Do you want to generate a .drone.yml file for drone.io CI? (Y/n):
 drone = drone.lower() != 'n'
 
 if drone:
-    drone_path = os.path.join(package_path, '.drone.yml')
+    drone_path = os.path.join(project_path, '.drone.yml')
     with open(drone_path, 'w') as f:
         f.write(drone_template.substitute(
             package_name=package_name))
