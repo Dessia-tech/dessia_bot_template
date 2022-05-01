@@ -140,7 +140,7 @@ else:
 short_description = input('Enter a short description : ')
 author_name = input('Enter your name : ')
 author_mail = input('Enter your e-mail : ')
-default_requirements = ['dessia_common>=0.5.1', 'volmdlr>=0.2.12']
+default_requirements = ['dessia_common>=0.7.2', 'volmdlr>=0.4.0']
 requirements = input("Enter required packages, separated by a coma (default : {})".format(default_requirements))
 python_version = input('Enter Python version (default : >=3.8) : ')
 if not requirements:
@@ -231,6 +231,7 @@ setup_str += "\tname='{}',\n".format(package_name)
 setup_str += "\tdescription='{}',\n".format(short_description)
 if create_readme:
     setup_str += "\tlong_description=readme(),\n"
+    setup_str += "\tlong_description_content_type='text/markdown',\n"
 else:
     setup_str += "\tlong_description='',\n"
 
