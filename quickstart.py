@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 
 from templates import manifest_template, readme_template, default_module_content, drone_template, test_template,\
-                        code_quality_template, code_pep8_template, code_pylint_template
+                        code_quality_template, code_pep8_template, code_pylint_template, setup_template
 
 parent_folder = Path(os.getcwd()).parent
 
@@ -59,7 +59,7 @@ def enter_valid_name(target: str, default: str = None):
 
 package_name = enter_valid_name('Package')
 
-git_use = input('Do you want to use git in this project (eventually through a service like Github, Gitlab, Gitea, Gogs)?: (Y/n)')
+git_use = input('Do you want to use git in this project (eventually through a service like Github, Gitlab, Gitea, Gogs)?: (Y/n): ')
 git_use = git_use.lower() != 'n'
 if git_use:
     done = input('Create a repository on your service (Github, Gitlab, Gitea, Gogs) and clone it on your computer. Press enter when done')
@@ -115,7 +115,7 @@ if not module_name:
     module_name = 'core'
 
 
-shutil.copyfile('setup_template.py', setup_path)
+# shutil.copyfile('setup_template.py', setup_path)
 
 if not os.path.exists(scripts_path):
     os.mkdir(scripts_path)
@@ -221,29 +221,37 @@ if drone:
             package_name=package_name))
 
 # Writing setup file
-setup_str = "\n\nsetup(\n"
+
 if from_git_tags.lower() == 'n':
-    setup_str += "\tversion='0.0.1',\n"
+    version = '0.0.1'
 else:
-    setup_str += "\tversion=get_version(),\n"
+    version = "get_version()"
 
-setup_str += "\tname='{}',\n".format(package_name)
-setup_str += "\tdescription='{}',\n".format(short_description)
-if create_readme:
-    setup_str += "\tlong_description=readme(),\n"
-    setup_str += "\tlong_description_content_type='text/markdown',\n"
-else:
-    setup_str += "\tlong_description='',\n"
+# setup_str += "\tname='{}',\n".format(package_name)
+# setup_str += "\tdescription='{}',\n".format(short_description)
+# if create_readme:
+#     setup_str += "\tlong_description=readme(),\n"
+#     setup_str += "\tlong_description_content_type='text/markdown',\n"
+# else:
+#     setup_str += "\tlong_description='',\n"
 
-setup_str += "\tauthor='{}',\n".format(author_name)
-setup_str += "\tauthor_email='{}',\n".format(author_mail)
-setup_str += "\tinstall_requires={},\n".format(requirements)
-setup_str += "\tpython_requires='{}',\n".format(python_version)
-setup_str += "\tpackages=find_packages(),\n"
-setup_str += ")"
+# setup_str += "\tauthor='{}',\n".format(author_name)
+# setup_str += "\tauthor_email='{}',\n".format(author_mail)
+# setup_str += "\tinstall_requires={},\n".format(requirements)
+# setup_str += "\tpython_requires='{}',\n".format(python_version)
+# setup_str += "\tpackages=find_packages(),\n"
+# setup_str += ")"
 
-setup_file = open(setup_path, 'a+')
-setup_file.write(setup_str)
+setup_str = setup_template.substitute(package_name=package_name,
+                                      version=version,
+                                      short_description = short_description,
+                                      author_name = author_name,
+                                      author_mail = author_mail,
+                                      requirements = requirements,
+                                      python_version = python_version)
+
+with open(setup_path, 'w') as setup_file:
+    setup_file.write(setup_str)
 
 
 manifest_path = os.path.join(project_path, 'MANIFEST.in')
