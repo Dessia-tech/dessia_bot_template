@@ -233,7 +233,7 @@ for error_type, number_errors in stats_by_msg.items():
             max_errors = MAX_ERROR_BY_TYPE[error_type]
         else:
             max_errors = 0
-            
+
         if number_errors > max_errors:
             error_detected = True
             print('Fix some {} errors: {}/{}'.format(error_type,
@@ -247,8 +247,8 @@ for error_type, number_errors in stats_by_msg.items():
 
 
 if error_detected:
-    raise RuntimeError('Too many errors\nRun pylint $package_name to get the errors')
-    
+    raise RuntimeError('Too many errors. Run pylint $package_name to get the errors')
+
 ''')
 
 code_pep8_template = string.Template('''#!/bin/bash
