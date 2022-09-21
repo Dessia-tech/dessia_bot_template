@@ -23,7 +23,8 @@ def create_package_base(parent_folder):
                     'Gogs)?: (Y/n): ')
     git_use = git_use.lower() != 'n'
     project_path = qs.check_git_use(git_use, package_name, parent_folder)
-    module_name, setup_path, module_path = qs.create_base(project_path, package_name)
+    module_name = qs.enter_valid_name('Module', 'core')
+    setup_path, module_path = qs.create_base(project_path, package_name, module_name)
     return project_path, package_name, module_path, module_name, setup_path
 
 
@@ -75,6 +76,7 @@ def main():
     requirement, python_version, pkg_version, short_desc = \
         misc(project_path, pkg_name, auth_name, auth_mail, s_desc, reqs, py_ver)
     qs.create_project(setup_path, project_path, pkg_name, pkg_version, short_desc, auth_name, auth_mail, reqs, py_ver)
+    print('Project generated to {}'.format(project_path))
 
 
 if __name__ == '__main__':

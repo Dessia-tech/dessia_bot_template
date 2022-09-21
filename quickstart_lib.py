@@ -1,6 +1,7 @@
 import os
 from typing import Tuple
 import shutil
+from pathlib import Path
 
 from templates import manifest_template, readme_template, default_module_content, drone_template, test_template,\
                         code_quality_template, code_pep8_template, code_pylint_template, setup_template
@@ -79,7 +80,7 @@ def check_git_use(git_use, package_name, parent_folder):
     return project_path
 
 
-def create_base(project_path, package_name):
+def create_base(project_path, package_name, module_name):
     package_path = os.path.join(project_path, package_name)
 
     if not os.path.exists(package_path):
@@ -89,12 +90,12 @@ def create_base(project_path, package_name):
     if not os.path.exists(assets_path):
         os.mkdir(assets_path)
 
-    shutil.copyfile('logo.png', os.path.join(assets_path, '{}.png'.format(package_name)))
+    shutil.copyfile(os.path.join(Path(__file__).parent.resolve(), 'logo.png'),
+                    os.path.join(assets_path, '{}.png'.format(package_name)))
 
     setup_path = os.path.join(project_path, 'setup.py')
     scripts_path = os.path.join(project_path, 'scripts')
 
-    module_name = enter_valid_name('Module', 'core')
     if not module_name:
         module_name = 'core'
 
@@ -118,7 +119,7 @@ def create_base(project_path, package_name):
         module_file.write(default_module_content)
     else:
         print('base python module already exists, skipping creation')
-    return module_name, setup_path, module_path
+    return setup_path, module_path
 
 
 def change_requirements(requirements, default_requirements, python_version):
@@ -135,7 +136,7 @@ def change_requirements(requirements, default_requirements, python_version):
 def create_gitignore(answer, project_path):
     gitignore_path = os.path.join(project_path, '.gitignore')
     if answer:
-        shutil.copyfile('python.gitignore', gitignore_path)
+        shutil.copyfile(os.path.join(Path(__file__).parent.resolve(), 'python.gitignore'), gitignore_path)
 
 
 def create_readme(answer, project_path, package_name, author_name, author_mail, short_description):
@@ -156,7 +157,7 @@ def create_tests(project_path, package_name):
 
     for test_filename in ['coverage.py', 'ci_tests.py']:
         test_file_path = os.path.join(tests_dir, test_filename)
-        shutil.copyfile(test_filename, test_file_path)
+        shutil.copyfile(os.path.join(Path(__file__).parent.resolve(), test_filename), test_file_path)
 
     test_path = os.path.join(tests_dir, 'test.py')
     with open(test_path, 'w') as f:
@@ -167,7 +168,7 @@ def code_quality(answer, project_path, package_name):
     if answer:
         for filename in ['.pep8', '.pylintrc']:
             cq_path = os.path.join(project_path, filename)
-            shutil.copyfile(filename, cq_path)
+            shutil.copyfile(os.path.join(Path(__file__).parent.resolve(), filename), cq_path)
 
         for code_quality_filename, template_name in [('code_pep8.sh', code_pep8_template),
                                                      ('code_quality.sh', code_quality_template),
@@ -229,5 +230,3 @@ def create_project(setup_path, project_path, package_name, version, short_descri
     if not os.path.exists(manifest_path):
         with open(manifest_path, 'w') as f:
             f.write(manifest_template.substitute(package_name=package_name))
-
-    print('Project generated to {}'.format(project_path))
