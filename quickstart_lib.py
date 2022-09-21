@@ -194,7 +194,7 @@ def change_from_git_tags(answer):
     if not answer:
         version = '0.0.1'
     else:
-        version = "get_version()"
+        version = get_version()
     return version
 
 # setup_str += "\tname='{}',\n".format(package_name)
