@@ -1,8 +1,10 @@
 import os
-from typing import Tuple
 import shutil
+
+from typing import Tuple
 from pathlib import Path
 
+import setup_template as st
 from templates import manifest_template, readme_template, default_module_content, drone_template, test_template,\
                         code_quality_template, code_pep8_template, code_pylint_template, setup_template
 
@@ -194,7 +196,7 @@ def change_from_git_tags(answer):
     if not answer:
         version = '0.0.1'
     else:
-        version = setup_template.get_version()
+        version = st.get_version()
     return version
 
 # setup_str += "\tname='{}',\n".format(package_name)
