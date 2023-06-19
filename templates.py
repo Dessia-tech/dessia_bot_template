@@ -367,7 +367,7 @@ def get_version():
 
     return version
 
-setup(version='$version',
+setup(version=$version,
       name='$package_name',
       description='$short_description',
       long_description=readme(),

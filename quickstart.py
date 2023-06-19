@@ -223,9 +223,9 @@ if drone:
 # Writing setup file
 
 if from_git_tags.lower() == 'n':
-    version = '0.0.1'
+    version = "'0.0.1'"
 else:
-    version = get_version()
+    version = "get_version()"
 
 # setup_str += "\tname='{}',\n".format(package_name)
 # setup_str += "\tdescription='{}',\n".format(short_description)
