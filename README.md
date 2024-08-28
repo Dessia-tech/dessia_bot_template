@@ -73,8 +73,8 @@ Before using this template, ensure you have the following installed:
 
 Clone this template repository to your local machine:
 ```
-      git clone <gitlab.com/dessia/XXX>
-      cd PackageTemplate
+      git clone https://github.com/Dessia-tech/dessia_bot_template.git
+      cd dessia_bot_template
 ```
 
 
