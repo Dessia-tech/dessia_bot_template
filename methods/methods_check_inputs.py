@@ -10,7 +10,7 @@ def validate_package_name(name):
         raise ValueError("\nYou need to add a 'Package name'")
 
     if not re.match(r'^[a-z_][a-z0-9_]*$', name):
-        raise ValueError(f"Invalid package name '{name}'. Package names must start with a letter or underscore and contain only lowercase letters, numbers, and underscores.")
+        raise ValueError(f"Invalid package name '{name}'. Package names must start with a letter or underscore and contain only lowercase letters, numbers, and underscores. Single and double quotes and double are not authorized.")
 
 def check_pypi_package_name(name):
     """

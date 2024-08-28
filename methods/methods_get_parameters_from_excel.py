@@ -12,7 +12,7 @@ def get_parameters_from_excel(excel_file):
 
     # %% Package name
 
-    package_name = df['Package name'][0]
+    package_name = df['Package name *'][0]
     validate_package_name(package_name)
     check_pypi_package_name(package_name)
     project_package_name = ''.join(x.title() for x in package_name.split('_'))
