@@ -97,7 +97,7 @@ Open the file PackageTemplate_Inputs.xlsx, and fill in the following fields:
    - **Python Version**: The minimum version of Python that your package is compatible with. Specify the version in the format >= followed by the version number.
    - **Author**: The name of the person or team responsible for maintaining the package. This should be the operations-team that will handle updates, support, and maintenance of the package.
    - **Email**: The contact email for the operations-team responsible for the package. This email should be monitored for any support requests, questions, or issues related to the package.
-   - **Package URL**: This URL where the package's source code will be created. Typically, this will be the URL of the repository hosting the package (e.g., a GitLab, GitHub, or Bitbucket repository). Like: gitlab.com:dessia
+   - **Package URL**: This URL where the package's source code will be created. Typically, this will be the URL of the repository hosting the package (e.g., a GitLab, GitHub, or Bitbucket repository) - Optional. Like: gitlab.com:Organisation
 
 
 **Example:**

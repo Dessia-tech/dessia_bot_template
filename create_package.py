@@ -53,7 +53,7 @@ for root, dirs, files in os.walk(new_package_dir):
         file_path = os.path.join(root, file_name)
         replace_placeholders(file_path, placeholders)
 
-print(f"The package '{parameters['package_name']}' has been successfully generated in {new_package_dir}.")
+print(f"\nThe package '{parameters['package_name']}' has been successfully generated in {new_package_dir}.\n")
 
 # %% Git Repository
 
@@ -66,13 +66,16 @@ subprocess.run(['git', 'commit', '-m', 'Initial commit'])  # Commit the changes
 # Rename the default branch to 'master'
 subprocess.run(['git', 'branch', '-M', 'master'])
 
+if parameters['remote_url']:
+    # Set up the upstream repository and push
+    push_command = (
+        f"git push --set-upstream git@{parameters['remote_url']}/"
+        f"$(git rev-parse --show-toplevel | xargs basename).git "
+        f"$(git rev-parse --abbrev-ref HEAD)"
+    )
+    subprocess.run(push_command, shell=True)
 
-# Set up the upstream repository and push
-push_command = (
-    f"git push --set-upstream git@{parameters['remote_url']}/"
-    f"$(git rev-parse --show-toplevel | xargs basename).git "
-    f"$(git rev-parse --abbrev-ref HEAD)"
-)
-subprocess.run(push_command, shell=True)
+    print(f"\nA new Git repository has been initialized in {new_package_dir}.")
 
-print(f"A new Git repository has been initialized in {new_package_dir}.")
+else:
+    print(f"\nA new local Git repository has been initialized in {new_package_dir}.")
