@@ -23,7 +23,7 @@ def get_parameters_from_excel(excel_file):
     # %% Package URL
 
     remote_url = df["Package URL"][0]
-    # validate_url(remote_url)
+    validate_url(remote_url)
     parameters["remote_url"] = remote_url
 
     # %% Short description

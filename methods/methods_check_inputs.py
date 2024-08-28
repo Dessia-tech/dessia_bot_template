@@ -31,12 +31,16 @@ def validate_url(url):
     """
     Validate the URL format.
     """
-    if not url:
-        raise ValueError("\nYou need to add a 'Package URL'")
+    # if not url:
+    #     raise ValueError("\nYou need to add a 'Package URL'")
 
-    if not re.match(r'^gitlab\.com:', url):
+    # if not re.match(r'^gitlab\.com:', url):
+    #     raise ValueError(f"\nAre you sure about your 'Package URL' = {url} ? " +\
+    #                      "The package must be sorted in Dessia Organization (as: git@gitlab.com:dessia/XX)")
+
+    if not re.match(r'^git:', url):
         raise ValueError(f"\nAre you sure about your 'Package URL' = {url} ? " +\
-                         "The package must be sorted in Dessia Organization (as: git@gitlab.com:dessia/XX)")
+                         "If you do not need to use Git, leave an empty cell.")
 
 def validate_python_version(version):
     """
