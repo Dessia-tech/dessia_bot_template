@@ -1,4 +1,4 @@
-## PackageTemplate
+## dessia_bot_template
 
 This repository provides a template for creating new Python packages. It includes all the necessary boilerplate code and directory structure to help you get started quickly and maintain consistency across your projects.
 
@@ -16,7 +16,7 @@ This repository provides a template for creating new Python packages. It include
 
 ## Overview
 
-PackageTemplate is a streamlined tool designed to help developers quickly generate new Python packages by providing a pre-configured project structure. By simply filling out an Excel file with essential package metadata, users can create a new package with all the necessary structure, including essential files like setup.py, README.md, and tests, initialize a Git repository, and push it to a remote Git repository.
+dessia_bot_template is a streamlined tool designed to help developers quickly generate new Python packages by providing a pre-configured project structure. By simply filling out an Excel file with essential package metadata, users can create a new package with all the necessary structure, including essential files like setup.py, README.md, and tests, initialize a Git repository, and push it to a remote Git repository.
 
 This template simplifies the process of starting a new Python project, allowing you to focus more on coding and less on setup.
 
@@ -64,7 +64,7 @@ Automatically creates a well-organized directory structure, including directorie
 Before using this template, ensure you have the following installed:
 
 - Python: Version 3.8 or later.
-- Git: Version control system to manage your codebase.
+- Git: Version control system to manage your codebase - Optional.
 - Excel: To edit the input data file (alternatively, use LibreOffice or any spreadsheet editor compatible with .xlsx files).
 
 
@@ -88,7 +88,7 @@ This template includes some Python dependencies for the script, install them:
 
 1. **Fill in the Excel File**
 
-Open the file PackageTemplate_Inputs.xlsx, and fill in the following fields:
+Open the file Template_Inputs.xlsx, and fill in the following fields:
 
    - **Package Name**: This is the unique name of your Python package. It should be all lowercase and use underscores to separate words (e.g., my_package).
    - **Short Description**: A concise summary of what your package does. This will appear in package listings and should be clear and to the point. Aim for one sentence.

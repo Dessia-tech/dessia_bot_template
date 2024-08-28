@@ -6,7 +6,7 @@ from methods.methods_get_parameters_from_excel import get_parameters_from_excel
 
 # %% Inputs
 
-parameters = get_parameters_from_excel(excel_file='PackageTemplate_Inputs.xlsx')
+parameters = get_parameters_from_excel(excel_file='Template_Inputs.xlsx')
 
 # %% New Directory
 

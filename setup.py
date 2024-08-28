@@ -90,7 +90,7 @@ def get_version():
 
 setup(
     version=get_version(),
-    name="package_template",
+    name="dessia_bot_template",
     description="This repository provides a template for creating new Python packages.",
     long_description=readme(),
     author="Dessia-Operations-Team",
