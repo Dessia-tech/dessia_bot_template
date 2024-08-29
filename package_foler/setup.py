@@ -88,7 +88,8 @@ def get_version():
     # print('version', version)
     return version
 
-install_requires = ["{{REQUIRED_PACKAGES}}"][0].split(',')
+
+install_requires = ["{{REQUIRED_PACKAGES}}"][0].split(",")
 
 setup(
     version=get_version(),

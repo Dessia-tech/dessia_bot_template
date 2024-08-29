@@ -25,19 +25,35 @@ file_list = filter(
 UNWATCHED_ERRORS = [
     # Do not watch these errors
     # General Format and Content Issues
-    'D100', 'D104', 'D105', 'D107',
+    "D100",
+    "D104",
+    "D105",
+    "D107",
     # Docstring Formatting
-    'D200', 'D202', 'D203', 'D204', 'D206', 'D210', 'D212',
+    "D200",
+    "D202",
+    "D203",
+    "D204",
+    "D206",
+    "D210",
+    "D212",
     # Docstring Content and Structure
-    'D301', 'D302',
-    'D401', 'D402', 'D407', 'D408', 'D409',
-    'D412', 'D415', 'D418'
+    "D301",
+    "D302",
+    "D401",
+    "D402",
+    "D407",
+    "D408",
+    "D409",
+    "D412",
+    "D415",
+    "D418",
 ]
 
 MAX_ERROR_BY_TYPE = {
     # If the error code is not in this dict, then there is no tolerance on the error.
     # http://www.pydocstyle.org/en/stable/error_codes.html
-    }
+}
 
 error_detected = False
 error_over_ratchet_limit = False
@@ -63,14 +79,10 @@ for error_code, number_errors in code_to_number.items():
             for error in errors_to_show:
                 print(f"{error.filename} line {error.line}: {error.message}")
         elif max_errors - ratchet_limit <= number_errors < max_errors:
-            print(
-                f"\nYou can lower number of {error_code} to {number_errors} (actual {max_errors})"
-            )
+            print(f"\nYou can lower number of {error_code} to {number_errors} (actual {max_errors})")
         elif number_errors < max_errors - ratchet_limit:
             error_over_ratchet_limit = True
-            print(
-                f"\nYou MUST lower number of {error_code} to {number_errors} (actual {max_errors})"
-            )
+            print(f"\nYou MUST lower number of {error_code} to {number_errors} (actual {max_errors})")
 
 if error_detected:
     raise RuntimeError("Too many errors\nRun pydocstyle {{PACKAGE_NAME}} to get the errors")
