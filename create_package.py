@@ -1,3 +1,6 @@
+"""
+This script creates a new Python package from a template directory, using the user inputs.
+"""
 import os
 import shutil
 import subprocess
@@ -12,27 +15,28 @@ parameters = get_parameters_from_excel(excel_file="Template_Inputs.xlsx")
 # %% New Directory
 
 # Path to the template directory
-template_dir = "package_foler"
-new_package_dir = f'../{parameters["project_package_name"]}'
+TEMPLATE_DIR = "package_foler"
+NEW_PACKAGE_DIR = os.path.join('..', parameters["project_package_name"])
 
 # Copy the template directory to a new location
-shutil.copytree(template_dir, new_package_dir)
+shutil.copytree(TEMPLATE_DIR, NEW_PACKAGE_DIR)
 
 # Rename the package folder
-old_folder = f'../{parameters["project_package_name"]}/folder'
-new_folder = f'../{parameters["project_package_name"]}/' + parameters["package_name"]
+old_folder = os.path.join('..', parameters["project_package_name"], 'folder')
+new_folder = os.path.join('..', parameters["project_package_name"], parameters["package_name"])
 os.rename(old_folder, new_folder)
 
 # %% Updates the files
 
 
 # Function to replace placeholders in a file
-def replace_placeholders(file_path, placeholders):
-    with open(file_path, "r") as file:
+def replace_placeholders(_file_path, _placeholders):
+    """Replace placeholders in a file with the corresponding values."""
+    with open(_file_path, "r", encoding="utf-8") as file:
         content = file.read()
-    for placeholder, value in placeholders.items():
+    for placeholder, value in _placeholders.items():
         content = content.replace(placeholder, value)
-    with open(file_path, "w") as file:
+    with open(_file_path, "w", encoding="utf-8") as file:
         file.write(content)
 
 
@@ -51,23 +55,23 @@ placeholders = {
 
 
 # Recursively find and update all files in the new package directory
-for root, dirs, files in os.walk(new_package_dir):
+for root, dirs, files in os.walk(NEW_PACKAGE_DIR):
     for file_name in files:
         file_path = os.path.join(root, file_name)
         replace_placeholders(file_path, placeholders)
 
-print(f"\nThe package '{parameters['package_name']}' has been successfully generated in {new_package_dir}.\n")
+print(f"\nThe package '{parameters['package_name']}' has been successfully generated in {NEW_PACKAGE_DIR}.\n")
 
 # %% Git Repository
 
 # Initialize a new Git repository
-os.chdir(new_package_dir)  # Change directory to the new package directory
-subprocess.run(["git", "init"])  # Initialize a new git repository
-subprocess.run(["git", "add", "."])  # Add all files to staging
-subprocess.run(["git", "commit", "-m", "Initial commit"])  # Commit the changes
+os.chdir(NEW_PACKAGE_DIR)  # Change directory to the new package directory
+subprocess.run(["git", "init"], check=True)  # Initialize a new git repository
+subprocess.run(["git", "add", "."], check=True)  # Add all files to staging
+subprocess.run(["git", "commit", "-m", "Initial commit"], check=True)  # Commit the changes
 
 # Rename the default branch to 'master'
-subprocess.run(["git", "branch", "-M", "master"])
+subprocess.run(["git", "branch", "-M", "master"], check=True)
 
 if parameters["remote_url"]:
     # Set up the upstream repository and push
@@ -76,9 +80,9 @@ if parameters["remote_url"]:
         f"$(git rev-parse --show-toplevel | xargs basename).git "
         f"$(git rev-parse --abbrev-ref HEAD)"
     )
-    subprocess.run(push_command, shell=True)
+    subprocess.run(push_command, shell=True, check=True)
 
-    print(f"\nA new Git repository has been initialized in {new_package_dir}.")
+    print(f"\nA new Git repository has been initialized in {NEW_PACKAGE_DIR}.")
 
 else:
-    print(f"\nA new local Git repository has been initialized in {new_package_dir}.")
+    print(f"\nA new local Git repository has been initialized in {NEW_PACKAGE_DIR}.")
