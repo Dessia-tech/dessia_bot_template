@@ -8,19 +8,13 @@ from glob import glob
 
 import pydocstyle
 
-exclude_folders = {""}
-
-
-def should_exclude_folder(path):
-    """Check if the folder should be excluded from the analysis."""
-    return any(ex in path for ex in exclude_folders)
-
+# Pydocstyle will not check these modules. Should be a list of strings.
+UNTRACKED_MODULES = []
 
 file_list = filter(
-    lambda z: not z.endswith("__init__.py") and not should_exclude_folder(z),
-    [y for x in os.walk("./{{PACKAGE_NAME}}") for y in glob(os.path.join(x[0], "*.py"))],
+    lambda z: not z.endswith("__init__.py") and not any(z.endswith(module) for module in UNTRACKED_MODULES),
+    [y for x in os.walk(os.path.join(".", "my_package")) for y in glob(os.path.join(x[0], "*.py"))],
 )
-
 
 UNWATCHED_ERRORS = [
     # Do not watch these errors
