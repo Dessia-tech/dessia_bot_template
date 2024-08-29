@@ -1,35 +1,42 @@
-# File introduces automated checks triggered on git events
-# to enable run `pip install pre-commit && pre-commit install`
+# This file configures automated checks triggered by git events.
+# To install pre-commit, run: `pip install pre-commit`
+#
+# To run all hooks manually, use: `pre-commit run -a`
+# To enable automated checks on commit, run: `pre-commit install`
+#
+# See https://github.com/pre-commit/pre-commit for more information
 
 repos:
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:
       - id: isort
-        args: ["--profile", "black"]
+        args: [--profile, "black", --line-length, "120"]
 
   - repo: https://github.com/psf/black
-    rev: 22.10.0
+    rev: 24.8.0
     hooks:
       - id: black
         args: [-l, "120"]
-        # It is recommended to specify the latest version of Python
-        # supported by your project here, or alternatively use
         language_version: python3.9
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v4.6.0
     hooks:
       - id: check-added-large-files
         args: ['--maxkb=50']
       - id: check-docstring-first
       - id: check-json
-      - id: check-added-large-files
       - id: check-yaml
       - id: debug-statements
       - id: requirements-txt-fixer
+      - id: check-case-conflict
       - id: check-merge-conflict
-      #- id: end-of-file-fixer
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+      - id: check-symlinks
 
   - repo: local
     hooks:
