@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=6.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 120
+exclude = "venv"
+
+[tool.isort]
+profile = "black"
+line_length = 120
+src_paths = ["."]
+skip = ["venv"]
