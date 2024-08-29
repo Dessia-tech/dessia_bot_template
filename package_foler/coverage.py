@@ -1,5 +1,5 @@
 """
-Coverage Analysis.
+Package coverage analysis script.
 """
 
 import json

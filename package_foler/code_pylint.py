@@ -1,5 +1,5 @@
 """
-Package analysis script with pylint.
+Package code quality analysis script with pylint.
 """
 
 import os

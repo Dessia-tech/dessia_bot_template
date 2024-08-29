@@ -1,5 +1,5 @@
 """
-Package analysis script with pydocstyle.
+Package documentation analysis script with pydocstyle.
 """
 
 import os
