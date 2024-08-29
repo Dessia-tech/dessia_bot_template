@@ -1,6 +1,7 @@
 """
 This script creates a new Python package from a template directory, using the user inputs.
 """
+
 import os
 import shutil
 import subprocess
@@ -16,14 +17,14 @@ parameters = get_parameters_from_excel(excel_file="Template_Inputs.xlsx")
 
 # Path to the template directory
 TEMPLATE_DIR = "package_foler"
-NEW_PACKAGE_DIR = os.path.join('..', parameters["project_package_name"])
+NEW_PACKAGE_DIR = os.path.join("..", parameters["project_package_name"])
 
 # Copy the template directory to a new location
 shutil.copytree(TEMPLATE_DIR, NEW_PACKAGE_DIR)
 
 # Rename the package folder
-old_folder = os.path.join('..', parameters["project_package_name"], 'folder')
-new_folder = os.path.join('..', parameters["project_package_name"], parameters["package_name"])
+old_folder = os.path.join("..", parameters["project_package_name"], "folder")
+new_folder = os.path.join("..", parameters["project_package_name"], parameters["package_name"])
 os.rename(old_folder, new_folder)
 
 # %% Updates the files

@@ -1,6 +1,7 @@
 """
 Setup script for the package.
 """
+
 import re
 
 from setuptools import find_packages, setup

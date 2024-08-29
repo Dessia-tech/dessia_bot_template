@@ -1,6 +1,7 @@
 """
 Methods to check the inputs of the package creation form.
 """
+
 import re
 
 import requests
@@ -17,7 +18,7 @@ def validate_package_name(name):
         raise ValueError(
             f"""
 Invalid package name '{name}'.
-Package names must start with a letter or underscore and contain only lowercase letters, numbers, and underscores. 
+Package names must start with a letter or underscore and contain only lowercase letters, numbers, and underscores.
 Single and double quotes and double are not authorized."""
         )
 
@@ -62,7 +63,7 @@ def validate_python_version(version):
     Validate the Python version format.
     """
     if not re.match(r"^>=?(\d+\.\d+)$", version):
-        raise ValueError(f"Invalid Python version '{version}'. Example of a valid version: '>=3.8'.")
+        raise ValueError(f"Invalid Python version '{version}'. Example of a valid version: '>=3.9'.")
 
 
 def validate_required_packages(packages):

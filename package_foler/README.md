@@ -6,7 +6,7 @@
 
 To install the package, run the following command in the root directory of the project:
 ```bash
-pip install -e . 
+pip install -e .
 ```
 or
 ```bash

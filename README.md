@@ -189,4 +189,3 @@ MyPackage/
 ## Contact
 
 For any questions or issues, please contact the Operations-Team.
-
