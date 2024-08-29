@@ -25,6 +25,7 @@ os.rename(old_folder, new_folder)
 
 # %% Updates the files
 
+
 # Function to replace placeholders in a file
 def replace_placeholders(file_path, placeholders):
     with open(file_path, "r") as file:
