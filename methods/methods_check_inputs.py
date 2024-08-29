@@ -39,7 +39,7 @@ def validate_url(url):
     #                      "The package must be sorted in Dessia Organization (as: git@gitlab.com:dessia/XX)")
 
     if not re.match(r'^git:', url):
-        raise ValueError(f"\nAre you sure about your 'Package URL' = {url} ? " +\
+        raise ValueError(f"\nAre you sure about your 'Package URL' = {url} ? It is not a Git URL\n" +\
                          "If you do not need to use Git, leave an empty cell.")
 
 def validate_python_version(version):
