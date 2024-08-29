@@ -1,12 +1,16 @@
+# Gitlab CI configuration file for the package.
+# You can use your own specific runner tags and images by changing the values in the tags and image fields
+
 stages:
   - check
   - test
 
 
+# Check the changelog has been updated
 check_changelog_update:
   stage: check
   tags:
-      - dessia_ubuntu
+    - saas-linux-small-amd64
   image: python:3.9
   script:
     - git fetch --depth=1000 origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
@@ -15,10 +19,11 @@ check_changelog_update:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
 
+# Check the code complexity with pylint and pydocstyle
 check_code_complexity:
   stage: check
   tags:
-    - dessia_ubuntu
+    - saas-linux-small-amd64
   image: dessia/python-ci:3.9
   script:
     - pip install numpy Cython>3
@@ -30,10 +35,11 @@ check_code_complexity:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
 
+# Test the package with unittests and run scripts, and generate coverage report
 install_run_scripts_and_unittests:
   stage: test
   tags:
-    - dessia_ubuntu
+    - saas-linux-small-amd64
   image: python:3.9
   script:
     - cd ..
@@ -57,3 +63,19 @@ install_run_scripts_and_unittests:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
+
+# Generate dist wheel and source distribution on master branch
+generate_dist_wheel:
+  stage: test
+  tags:
+    - saas-linux-small-amd64
+  image: python:3.9
+  script:
+    - pip install setuptools wheel
+    - python setup.py sdist bdist_wheel
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+  artifacts:
+    paths:
+      - dist/*.whl
+      - dist/*.tar.gz
