@@ -16,7 +16,7 @@ This repository provides a template for creating new Python packages. It include
 
 ## Overview
 
-dessia_bot_template is a streamlined tool designed to help developers quickly generate new Python packages by providing a pre-configured project structure. By simply filling out an Excel file with essential package metadata, users can create a new package with all the necessary structure, including essential files like setup.py, README.md, and tests, initialize a Git repository, and push it to a remote Git repository.
+**dessia_bot_template** is a streamlined tool designed to help developers quickly generate new Python packages by providing a pre-configured project structure. By simply filling out an Excel file with essential package metadata, users can create a new package with all the necessary structure, including essential files like setup.py, README.md, and tests, initialize a Git repository, and push it to a remote Git repository.
 
 This template simplifies the process of starting a new Python project, allowing you to focus more on coding and less on setup.
 
@@ -73,15 +73,15 @@ Before using this template, ensure you have the following installed:
 
 Clone this template repository to your local machine:
 ```
-      git clone https://github.com/Dessia-tech/dessia_bot_template.git
-      cd dessia_bot_template
+git clone https://github.com/Dessia-tech/dessia_bot_template.git
+cd dessia_bot_template
 ```
 
 
 This template includes some Python dependencies for the script, install them:
 
 ```
-      pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Usage
@@ -103,24 +103,24 @@ Open the file Template_Inputs.xlsx, and fill in the following fields:
 **Example:**
 
 ```
-      | Item             | Example                                                    |
-      ├──────────────────├────────────────────────────────────────────────────────────|
-      | Package Name     | my_package                                                 |
-      | Short Description| A package that does awesome things                         |
-      | Long Description | This package provides awesome features for awesome people. |
-      | Required Packages| dessia_common>=0.18.0, plot_data>=0.26.0                   |
-      | Python Version   | >=3.9                                                      |
-      | Author           | Operations-Team                                            |
-      | Email            | support@dessia.io                                          |
-      | Package URL      | gitlab.com:Organisation/ClientFolder                       |
+| Item             | Example                                                    |
+├──────────────────├────────────────────────────────────────────────────────────|
+| Package Name     | my_package                                                 |
+| Short Description| A package that does awesome things                         |
+| Long Description | This package provides awesome features for awesome people. |
+| Required Packages| dessia_common>=0.18.0, plot_data>=0.26.0                   |
+| Python Version   | >=3.9                                                      |
+| Author           | Operations-Team                                            |
+| Email            | support@dessia.io                                          |
+| Package URL      | gitlab.com:Organisation/ClientFolder                       |
 ```
 
 2. **Run the Script**
 
 After filling in the Excel file, run the create_package.py script to generate your new package:
 
-```
-      python3 create_package.py
+```bash
+python3 create_package.py
 ```
 
 The script will:
@@ -136,7 +136,7 @@ The script will:
 If the script hasn't automatically pushed to the remote repository, you can manually push your changes:
 
 ```
-      git push -u origin master
+git push -u origin master
 ```
 
 
@@ -145,34 +145,32 @@ If the script hasn't automatically pushed to the remote repository, you can manu
 Here's an overview of the directory structure provided by this template:
 
 ```
-      MyPackage/
-      ├── my_package/                   # Main source code directory
-      │   ├── __init__.py               # Initialize your package
-      │   ├── module_1.py               # Example module 1
-      │   └── module_2.py               # Example module 2
-      ├── scripts/                      # Directory for utility scripts related to the package
-      │   ├── script_1.py               # Utility script 1
-      │   ├── script_2.py               # Utility script 2
-      │   └── ci_scripts.py             # Script to run all utility scripts
-      ├── tests/                        # Directory for unit tests
-      │   ├── __init__.py               # Initialize test package
-      │   └── test_example.py           # Example test file
-      ├── CHANGELOG.md                  # Changelog for tracking changes
-      ├── README.md                     # Main documentation file
-      ├── setup.py                      # Installation and package metadata
-      ├── code_pydocstyle.py            # Configuration script for Pydocstyle
-      ├── code_pylint.py                # Configuration script for Pylint
-      ├── coverage.py                   # Coverage configuration script
-      ├── requirements.txt              # Python dependencies for the package
-      ├── .gitlab/                      # GitLab configuration files and templates
-      │   ├── issue_template.md         # Template for submitting issues
-      │   └── merge_request_template.md # Template for merge requests
-      ├── .gitlab-ci.yml                # GitLab CI/CD pipeline configuration
-      ├── .coveragerc                   # Coverage configuration file
-      ├── .gitignore                    # Git ignore rules
-      ├── .isort.cfg                    # Configuration for isort
-      ├── .pre-commit-config.yaml       # Pre-commit hooks configuration
-      └── .pylintrc                     # Pylint configuration file
+MyPackage/
+├── my_package/                   # Main source code directory
+│   ├── __init__.py               # Initialize your package
+│   ├── module_1.py               # Example module 1
+│   └── module_2.py               # Example module 2
+├── scripts/                      # Directory for utility scripts related to the package
+│   ├── script_1.py               # Utility script 1
+│   ├── script_2.py               # Utility script 2
+│   └── ci_scripts.py             # Script to run all utility scripts
+├── tests/                        # Directory for unit tests
+│   ├── __init__.py               # Initialize test package
+│   └── test_example.py           # Example test file
+├── CHANGELOG.md                  # Changelog for tracking changes
+├── README.md                     # Main documentation file
+├── setup.py                      # Installation and package metadata
+├── code_pydocstyle.py            # Configuration script for Pydocstyle
+├── code_pylint.py                # Configuration script for Pylint
+├── coverage.py                   # Coverage configuration script
+├── requirements.txt              # Python dependencies for the package
+├── .gitlab/                      # GitLab configuration files and templates
+│   ├── issue_template.md         # Template for submitting issues
+│   └── merge_request_template.md # Template for merge requests
+├── .gitlab-ci.yml                # GitLab CI/CD pipeline configuration
+├── .gitignore                    # Git ignore rules
+├── .pre-commit-config.yaml       # Pre-commit hooks configuration
+└── .pylintrc                     # Pylint configuration file
 ```
 
 
