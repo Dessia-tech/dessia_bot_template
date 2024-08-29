@@ -1,5 +1,5 @@
 """
-Pylint Analysis.
+Package analysis script with pylint.
 """
 
 import os
@@ -7,11 +7,11 @@ import sys
 
 from pylint.lint import Run
 
-MIN_NOTE = 8
+MIN_SCORE = 8.0
 
 UNWATCHED_ERRORS = []
 
-MAX_ERROR_BY_TYPE = {
+MAX_ERRORS_BY_TYPE = {
     "line-too-long": 0,
     "consider-using-f-string": 0,
     "implicit-str-concat": 0,
@@ -80,55 +80,37 @@ MAX_ERROR_BY_TYPE = {
 }
 
 
-f = open(os.devnull, "w")
+# Redirect stdout to suppress pylint's output, keeping it in a variable
+sys.stdout = open(os.devnull, "w", encoding="utf-8")
+results = Run(["{{PACKAGE_NAME}}", "--output-format=json", "--reports=no"])
+sys.stdout = sys.__stdout__  # Restore stdout
 
-old_stdout = sys.stdout
-sys.stdout = f
+pylint_score = (
+    results.linter.stats.global_note
+    if hasattr(results.linter.stats, "global_note")
+    else results.linter.stats["global_note"]
+)
+print(f"Pylint score: {pylint_score}")
+assert pylint_score >= MIN_SCORE, f"Pylint score is below the minimum required: {MIN_SCORE}."
 
-results = Run(["{{PACKAGE_NAME}}", "--output-format=json", "--reports=no"], do_exit=False)
-# `exit` is deprecated, use `do_exit` instead
-sys.stdout = old_stdout
-
-PYLINT_OBJECTS = True
-if hasattr(results.linter.stats, "global_note"):
-    pylint_note = results.linter.stats.global_note
-    PYLINT_OBJECT_STATS = True
-else:
-    pylint_note = results.linter.stats["global_note"]
-    PYLINT_OBJECT_STATS = False
-
-print("Pylint note: ", pylint_note)
-assert pylint_note >= MIN_NOTE
-print("You can increase MIN_NOTE in pylint to {} (actual: {})".format(pylint_note, MIN_NOTE))
-
-
-def extract_messages_by_type(type_):
-    return [m for m in results.linter.reporter.messages if m.symbol == type_]
-
-
-# uncontrolled_errors = {}
 error_detected = False
-
-if PYLINT_OBJECT_STATS:
-    stats_by_msg = results.linter.stats.by_msg
-else:
-    stats_by_msg = results.linter.stats["by_msg"]
+stats_by_msg = (
+    results.linter.stats.by_msg if hasattr(results.linter.stats, "by_msg") else results.linter.stats["by_msg"]
+)
 
 for error_type, number_errors in stats_by_msg.items():
-    if error_type not in UNWATCHED_ERRORS:
-        if error_type in MAX_ERROR_BY_TYPE:
-            max_errors = MAX_ERROR_BY_TYPE[error_type]
-        else:
-            max_errors = 0
+    max_errors = MAX_ERRORS_BY_TYPE.get(error_type, 0)
+    if number_errors > max_errors:
+        error_detected = True
+        print(f"Fix {number_errors} {error_type} errors (maximum allowed: {max_errors})")
+        for message in (m for m in results.linter.reporter.messages if m.symbol == error_type):
+            print(f"{message.path}, line {message.line}: {message.msg}")
 
-        if number_errors > max_errors:
-            error_detected = True
-            print("Fix some {} errors: {}/{}".format(error_type, number_errors, max_errors))
-            for message in extract_messages_by_type(error_type):
-                print("{} line {}: {}".format(message.path, message.line, message.msg))
-        elif number_errors < max_errors:
-            print("You can lower number of {} to {} (actual {})".format(error_type, number_errors, max_errors))
-
+    elif number_errors < max_errors:
+        print(
+            f"""
+You can reduce the maximum allowed {error_type} errors to {number_errors} (current limit: {max_errors})"""
+        )
 
 if error_detected:
-    raise RuntimeError("Too many errors. Run pylint {{PACKAGE_NAME}} to get the errors")
+    raise RuntimeError(f"Too many errors. Run 'pylint {{PACKAGE_NAME}}' to see details.")

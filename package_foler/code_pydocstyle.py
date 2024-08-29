@@ -1,5 +1,5 @@
 """
-PyDocStrings Analysis.
+Package analysis script with pydocstyle.
 """
 
 import os
