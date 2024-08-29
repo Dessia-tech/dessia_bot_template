@@ -11,3 +11,6 @@ profile = "black"
 line_length = 120
 src_paths = ["."]
 skip = ["venv"]
+
+[tool.coverage.run]
+source = "{{PACKAGE_NAME}}"

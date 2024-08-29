@@ -1,12 +1,11 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
-Excute Scripts.
+Excute specific scripts for CI.
 """
 
 import os
 import time
 
+# List of scripts to execute
 scripts = ["script_1.py"]
 
 # Testing if all scripts exists before launching them
@@ -16,7 +15,7 @@ for script_name in scripts:
 
 # Executing scripts
 print("Executing scripts for CI:")
-total_time = time.time()
+total_time = time.perf_counter()
 top_level_dir = os.getcwd()
 times = {}
 for script_name in scripts:
@@ -30,15 +29,15 @@ for script_name in scripts:
             script_folder = os.path.join(top_level_dir, script_folder)
             os.chdir(script_folder)
     file_name = script_name.split("/")[-1]
-    t = time.time()
+    t = time.perf_counter()
     with open(file_name, "r", encoding="utf-8") as script:
         exec(script.read())
-    t = time.time() - t
+    t = time.perf_counter() - t
     times[script_name] = t
 
 print("Computation times:")
 for script_name, t in sorted(times.items(), key=lambda x: x[1]):
     print(f"* script {script_name}: {round(t, 3)} seconds ")
 
-total_time = time.time() - total_time
+total_time = time.perf_counter() - total_time
 print(f"Total time for CI scripts: {total_time}")

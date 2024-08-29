@@ -12,7 +12,7 @@ exclude_folders = {""}
 
 
 def should_exclude_folder(path):
-    # Vérifie si le chemin contient un des dossiers à exclure
+    """Check if the folder should be excluded from the analysis."""
     return any(ex in path for ex in exclude_folders)
 
 
@@ -55,9 +55,9 @@ MAX_ERROR_BY_TYPE = {
     # http://www.pydocstyle.org/en/stable/error_codes.html
 }
 
-error_detected = False
-error_over_ratchet_limit = False
-ratchet_limit = 9
+ERROR_DETECTED = False
+ERROR_OVER_RATCHET_LIMIT = False
+RATCHET_LIMIT = 9
 
 code_to_errors = {}
 for error in pydocstyle.check(file_list, ignore=UNWATCHED_ERRORS):
@@ -71,23 +71,23 @@ for error_code, number_errors in code_to_number.items():
         max_errors = max(MAX_ERROR_BY_TYPE.get(error_code, 0), 0)
 
         if number_errors > max_errors:
-            error_detected = True
+            ERROR_DETECTED = True
             print(f"\nFix some {error_code} errors: {number_errors}/{max_errors}")
 
             errors = code_to_errors[error_code]
             errors_to_show = sorted(random.sample(errors, min(30, len(errors))), key=lambda m: (m.filename, m.line))
             for error in errors_to_show:
                 print(f"{error.filename} line {error.line}: {error.message}")
-        elif max_errors - ratchet_limit <= number_errors < max_errors:
+        elif max_errors - RATCHET_LIMIT <= number_errors < max_errors:
             print(f"\nYou can lower number of {error_code} to {number_errors} (actual {max_errors})")
-        elif number_errors < max_errors - ratchet_limit:
-            error_over_ratchet_limit = True
+        elif number_errors < max_errors - RATCHET_LIMIT:
+            ERROR_OVER_RATCHET_LIMIT = True
             print(f"\nYou MUST lower number of {error_code} to {number_errors} (actual {max_errors})")
 
-if error_detected:
+if ERROR_DETECTED:
     raise RuntimeError("Too many errors\nRun pydocstyle {{PACKAGE_NAME}} to get the errors")
 
-if error_over_ratchet_limit:
+if ERROR_OVER_RATCHET_LIMIT:
     raise RuntimeError(
         "Please lower the error limits in code_pydocstyle.py MAX_ERROR_BY_TYPE according to warnings above"
     )
