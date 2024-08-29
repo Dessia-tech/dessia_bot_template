@@ -7,7 +7,7 @@ import sys
 
 from pylint.lint import Run
 
-MIN_SCORE = 8.0
+MIN_SCORE = 10.0
 
 UNWATCHED_ERRORS = []
 
@@ -82,7 +82,7 @@ MAX_ERRORS_BY_TYPE = {
 
 # Redirect stdout to suppress pylint's output, keeping it in a variable
 sys.stdout = open(os.devnull, "w", encoding="utf-8")
-results = Run(["{{PACKAGE_NAME}}", "--output-format=json", "--reports=no"])
+results = Run(["my_package", "--output-format=json", "--reports=no"], exit=False)
 sys.stdout = sys.__stdout__  # Restore stdout
 
 pylint_score = (
