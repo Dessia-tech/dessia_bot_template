@@ -4,13 +4,13 @@
 
 ## Installation
 
-To install the package, move to the folder next to setup.py and run:
+To install the package, run the following command in the root directory of the project:
 ```bash
-python setup.py install
+pip install -e . 
 ```
 or
 ```bash
-python3 setup.py install
+python3 -m pip install -e .
 ```
 ## Usage
 
@@ -28,4 +28,3 @@ See the scripts folder for examples.
 ## Contact
 
 For any questions or issues, please contact the {{AUTHOR}} at {{CONTACT}}.
-

@@ -159,11 +159,11 @@ MyPackage/
 │   └── test_example.py           # Example test file
 ├── CHANGELOG.md                  # Changelog for tracking changes
 ├── README.md                     # Main documentation file
-├── setup.py                      # Installation and package metadata
+├── setup.py                      # Installation and package metadata, package dependencies
 ├── code_pydocstyle.py            # Configuration script for Pydocstyle
 ├── code_pylint.py                # Configuration script for Pylint
 ├── coverage.py                   # Coverage configuration script
-├── requirements.txt              # Python dependencies for the package
+├── pyproject.toml                # Configuration file for PEP 517 build system
 ├── .gitlab/                      # GitLab configuration files and templates
 │   ├── issue_template.md         # Template for submitting issues
 │   └── merge_request_template.md # Template for merge requests
