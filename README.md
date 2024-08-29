@@ -63,7 +63,7 @@ Automatically creates a well-organized directory structure, including directorie
 
 Before using this template, ensure you have the following installed:
 
-- Python: Version 3.8 or later.
+- Python: Version 3.9 or later.
 - Git: Version control system to manage your codebase - Optional.
 - Excel: To edit the input data file (alternatively, use LibreOffice or any spreadsheet editor compatible with .xlsx files).
 
