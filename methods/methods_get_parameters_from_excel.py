@@ -3,7 +3,8 @@ Mathods to get the parameters from an Excel file.
 """
 
 import pandas as pd
-from methods_check_inputs import (
+
+from dessia_bot_template.methods.methods_check_inputs import (
     check_pypi_package_name,
     validate_email,
     validate_package_name,
