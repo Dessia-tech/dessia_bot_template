@@ -1,10 +1,20 @@
-import pandas as pd
+"""
+Mathods to get the parameters from an Excel file.
+"""
 
-from .methods_check_inputs import *
+import pandas as pd
+from methods_check_inputs import (
+    check_pypi_package_name,
+    validate_email,
+    validate_package_name,
+    validate_python_version,
+    validate_required_packages,
+    validate_url,
+)
 
 
 def get_parameters_from_excel(excel_file):
-
+    """Get the parameters from an Excel file."""
     # Read the Excel file
     df = pd.read_excel(excel_file)
     df = df.fillna("")

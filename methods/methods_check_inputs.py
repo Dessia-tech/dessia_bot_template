@@ -1,3 +1,6 @@
+"""
+Methods to check the inputs of the package creation form.
+"""
 import re
 
 import requests
@@ -12,7 +15,10 @@ def validate_package_name(name):
 
     if not re.match(r"^[a-z_][a-z0-9_]*$", name):
         raise ValueError(
-            f"Invalid package name '{name}'. Package names must start with a letter or underscore and contain only lowercase letters, numbers, and underscores. Single and double quotes and double are not authorized."
+            f"""
+Invalid package name '{name}'.
+Package names must start with a letter or underscore and contain only lowercase letters, numbers, and underscores. 
+Single and double quotes and double are not authorized."""
         )
 
 
@@ -20,7 +26,7 @@ def check_pypi_package_name(name):
     """
     Check if the package name already exists on PyPI.
     """
-    response = requests.get(f"https://pypi.org/pypi/{name}/json")
+    response = requests.get(f"https://pypi.org/pypi/{name}/json", timeout=5)
     if response.status_code == 200:
         print(f"Warning: The package name '{name}' already exists on PyPI. Consider choosing a different name.")
 
