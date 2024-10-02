@@ -1,10 +1,9 @@
 """This module contains functions to check the validity of the inputs provided by the user."""
 
 import re
+from http import HTTPStatus
 
 import requests
-
-HTTP_STATUS_OK = 200
 
 
 def validate_package_name(name: str) -> None:
@@ -22,7 +21,7 @@ def check_pypi_package_name(name: str) -> None:
     """Check if the package name already exists on PyPI."""
     response = requests.get(f"https://pypi.org/pypi/{name}/json")
 
-    if response.status_code == HTTP_STATUS_OK:
+    if response.status_code == HTTPStatus.OK:
         print(f"Warning: The package name '{name}' already exists on PyPI. Consider choosing a different name.")
 
 
