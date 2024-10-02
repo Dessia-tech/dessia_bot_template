@@ -185,10 +185,9 @@ Here's an overview of the directory structure provided by this template:
      If you encounter problems reading the Excel file, ensure it's properly formatted and saved as .xlsx.
 
    - Package Name Conflicts:
-     Be sure that the choosen package name does not already exist in your organization or on PyPI. So, consider choosing a different name to avoid conflicts.
+     Be sure that the chosen package name does not already exist in your organization or on PyPI. So, consider choosing a different name to avoid conflicts.
 
 
 ## Contact
 
 For any questions or issues, please contact the Operations-Team.
-
