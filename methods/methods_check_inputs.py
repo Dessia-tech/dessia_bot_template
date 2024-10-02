@@ -1,9 +1,13 @@
+"""This module contains functions to check the validity of the inputs provided by the user."""
+
 import re
 
 import requests
 
+HTTP_STATUS_OK = 200
 
-def validate_package_name(name) -> None:
+
+def validate_package_name(name: str) -> None:
     """Check if the package name follows Python naming conventions."""
     if not name:
         raise ValueError("\nYou need to add a 'Package name'")
@@ -14,20 +18,21 @@ def validate_package_name(name) -> None:
         )
 
 
-def check_pypi_package_name(name) -> None:
+def check_pypi_package_name(name: str) -> None:
     """Check if the package name already exists on PyPI."""
     response = requests.get(f"https://pypi.org/pypi/{name}/json")
-    if response.status_code == 200:
+
+    if response.status_code == HTTP_STATUS_OK:
         print(f"Warning: The package name '{name}' already exists on PyPI. Consider choosing a different name.")
 
 
-def validate_email(email) -> None:
+def validate_email(email: str) -> None:
     """Validate the email format."""
     if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
         raise ValueError(f"Invalid email address '{email}'.")
 
 
-def validate_url(url) -> None:
+def validate_url(url: str) -> None:
     """Validate the URL format."""
     # if not url:
     #     raise ValueError("\nYou need to add a 'Package URL'")
@@ -43,13 +48,13 @@ def validate_url(url) -> None:
         )
 
 
-def validate_python_version(version) -> None:
+def validate_python_version(version: str) -> None:
     """Validate the Python version format."""
     if not re.match(r"^>=?(\d+\.\d+)$", version):
         raise ValueError(f"Invalid Python version '{version}'. Example of a valid version: '>=3.8'.")
 
 
-def validate_required_packages(packages) -> None:
+def validate_required_packages(packages: str) -> None:
     """Validate the format of required packages and versions."""
     if packages:
         for package in packages.split(","):

@@ -1,3 +1,5 @@
+"""Script to generate a new Python package from a template directory."""
+
 import os
 import shutil
 import subprocess
@@ -27,7 +29,8 @@ os.rename(old_folder, new_folder)
 
 
 # Function to replace placeholders in a file
-def replace_placeholders(file_path, placeholders) -> None:
+def replace_placeholders(file_path: str, placeholders: dict) -> None:
+    """Replace placeholders in a file with the corresponding values."""
     with open(file_path, encoding="utf-8") as file:
         content = file.read()
     for placeholder, value in placeholders.items():
