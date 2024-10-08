@@ -1,5 +1,1 @@
-"""
-Module Documentation
-"""
-
-
+"""Module Documentation."""

@@ -1,3 +1,1 @@
-"""
-{{PROJECT_NAME}} Package
-"""
+"""{{PROJECT_NAME}} Package."""

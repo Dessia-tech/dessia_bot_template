@@ -1,9 +1,6 @@
-import re
-from os.path import dirname, isdir, join
-from subprocess import CalledProcessError, check_output
+"""Setup file."""
 
 from setuptools import find_packages, setup
-
 
 
 def readme() -> str:
@@ -12,7 +9,7 @@ def readme() -> str:
         return f.read()
 
 
-install_requires = ["{{REQUIRED_PACKAGES}}"][0].split(',')
+install_requires = ["{{REQUIRED_PACKAGES}}"][0].split(",")
 
 setup(
     name="{{PACKAGE_NAME}}",
