@@ -1,9 +1,19 @@
+"""Functions to get parameters from an Excel file."""
 
 import pandas as pd
-from .methods_check_inputs import *
 
-def get_parameters_from_excel(excel_file):
+from .methods_check_inputs import (
+    check_pypi_package_name,
+    validate_email,
+    validate_package_name,
+    validate_python_version,
+    validate_required_packages,
+    validate_url,
+)
 
+
+def get_parameters_from_excel(excel_file: str) -> dict:
+    """Get the parameters from an Excel file."""
     # Read the Excel file
     df = pd.read_excel(excel_file)
     df = df.fillna("")
@@ -12,10 +22,10 @@ def get_parameters_from_excel(excel_file):
 
     # %% Package name
 
-    package_name = df['Package name *'][0]
+    package_name = df["Package name *"][0]
     validate_package_name(package_name)
     check_pypi_package_name(package_name)
-    project_package_name = ''.join(x.title() for x in package_name.split('_'))
+    project_package_name = "".join(x.title() for x in package_name.split("_"))
 
     parameters["package_name"] = package_name
     parameters["project_package_name"] = project_package_name
@@ -29,21 +39,23 @@ def get_parameters_from_excel(excel_file):
 
     # %% Short description
 
-    description = df['Short description'][0]
+    description = df["Short description"][0]
     if not description:
         description = "A Specific package for a technological issue."
     parameters["description"] = description
 
     # %% Long description
 
-    long_description = df['Long description'][0]
+    long_description = df["Long description"][0]
     if not long_description:
-        long_description = "A Python package using DessiA SDK and DessiA coding guidelines (https://documentation.dessia.io)"
+        long_description = (
+            "A Python package using DessiA SDK and DessiA coding guidelines (https://documentation.dessia.io)"
+        )
     parameters["long_description"] = long_description
 
     # %% Python version
 
-    version = df['Python version'][0]
+    version = df["Python version"][0]
     if not version:
         version = ">=3.9"
     else:
@@ -52,14 +64,14 @@ def get_parameters_from_excel(excel_file):
 
     # %% Author
 
-    author = df['Author'][0]
+    author = df["Author"][0]
     if not author:
         author = "Operations-Team"
     parameters["author"] = author
 
     # %% E-mail
 
-    contact = df['E-mail'][0]
+    contact = df["E-mail"][0]
     if not contact:
         contact = "support@dessia.io"
     else:
@@ -68,7 +80,7 @@ def get_parameters_from_excel(excel_file):
 
     # %% Required packages
 
-    required_packages = df['Required packages'][0].replace("\n", "")
+    required_packages = df["Required packages"][0].replace("\n", "")
     if not required_packages:
         required_packages = ["dessia_common>=0.18.0, plot_data>=0.26.0"]
     else:
