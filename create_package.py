@@ -29,13 +29,13 @@ os.rename(old_folder, new_folder)
 
 
 # Function to replace placeholders in a file
-def replace_placeholders(file_path: str, placeholders: dict) -> None:
+def replace_placeholders(_file_path: str, _placeholders: dict) -> None:
     """Replace placeholders in a file with the corresponding values."""
-    with open(file_path, encoding="utf-8") as file:
+    with open(_file_path, encoding="utf-8") as file:
         content = file.read()
-    for placeholder, value in placeholders.items():
+    for placeholder, value in _placeholders.items():
         content = content.replace(placeholder, value)
-    with open(file_path, "w", encoding="utf-8") as file:
+    with open(_file_path, "w", encoding="utf-8") as file:
         file.write(content)
 
 
