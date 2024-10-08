@@ -5,7 +5,7 @@ requires-python = ">= 3.9"
 [tool.ruff]
 line-length = 120
 target-version = "py39"
-exclude = ["package_foler"]
+exclude = []
 
 [tool.ruff.lint]
 preview = true
@@ -32,5 +32,5 @@ convention = "pep257"
 "tests/**/*.py" = ["D"]  # documenting the unit tests is not necessary
 
 [tool.codespell]
-skip = "htmlcov"
+skip = ["*.json", "*.html", "*.js", "*.css", ".c", ".h", ".cpp", ".hpp", "*.xml"]
 ignore-words-list = ["dessia"]  # words to ignore from codespell check
