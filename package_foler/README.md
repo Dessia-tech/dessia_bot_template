@@ -28,4 +28,3 @@ See the scripts folder for examples.
 ## Contact
 
 For any questions or issues, please contact the {{AUTHOR}} at {{CONTACT}}.
-
