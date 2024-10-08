@@ -35,7 +35,7 @@ skip = ["*.json", "*.html", "*.js", "*.css", ".c", ".h", ".cpp", ".hpp", "*.xml"
 ignore-words-list = ["dessia"]  # words to ignore from codespell check
 
 [tool.coverage.run]
-source = ["{{PROJECT_NAME}}"]  # source code directories
+source = ["{{PACKAGE_NAME}}"]  # source code directories
 
 [tool.coverage.report]
 omit = []  # modules to omit from coverage analysis
