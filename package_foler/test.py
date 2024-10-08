@@ -13,13 +13,13 @@ import tomli
 
 def setup_environment() -> None:
     """Set up environment variables for coverage."""
-    os.environ["COVERAGE_FILE"] = (Path(__file__).parent.resolve() / ".coverage").as_posix()
-    os.environ["COVERAGE_RCFILE"] = (Path(__file__).parent.resolve() / "pyproject.toml").as_posix()
+    os.environ["COVERAGE_FILE"] = str(Path(__file__).parent.resolve() / ".coverage")
+    os.environ["COVERAGE_RCFILE"] = str(Path(__file__).parent.resolve() / "pyproject.toml")
 
 
 def load_config() -> dict[str, Any]:
     """Load configuration file."""
-    with open((Path(__file__).parent.resolve() / "pyproject.toml").as_posix(), "rb") as file:
+    with open(str(Path(__file__).parent.resolve() / "pyproject.toml"), "rb") as file:
         config = tomli.load(file)
 
     # Extract the [coverage] section
@@ -45,7 +45,7 @@ def run_scripts_coverage(untracked_scripts: Optional[list[str]] = None) -> int:
     for script in scripts_dir.rglob("*.py"):
         script_path = script.relative_to(scripts_dir)
 
-        if script_path.as_posix() not in untracked_scripts:
+        if str(script_path) not in untracked_scripts:
             print(f"\n  * Running {script_path}")
             start = time.perf_counter()
             result = subprocess.run(
