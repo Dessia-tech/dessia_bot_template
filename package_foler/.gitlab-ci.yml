@@ -50,7 +50,7 @@ install_run_scripts_and_unittests:
     - apt-get update && apt-get install -y libgl1
     - python3 -m pip install --upgrade pip
     - pip install git+https://github.com/Dessia-tech/dessia_common.git
-#    - pip install git+https://gitlab-ci-token:$CI_JOB_TOKEN@gitlab.com/dessia/sdk/volmdlr.git
+    - pip install git+https://gitlab-ci-token:$CI_JOB_TOKEN@gitlab.com/dessia/sdk/volmdlr.git
     - pip install -e .[doc,test]
     - pip install coverage tomli
     - python3 test.py
