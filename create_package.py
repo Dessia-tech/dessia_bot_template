@@ -5,11 +5,11 @@ import shutil
 import subprocess
 from datetime import date
 
-from methods.methods_get_parameters_from_excel import get_parameters_from_excel
+from methods.methods_get_parameters_from_ini_file import get_parameters_from_ini_file
 
 # %% Inputs
 
-parameters = get_parameters_from_excel(excel_file="Template_Inputs.xlsx")
+parameters = get_parameters_from_ini_file(ini_file="template_inputs.ini")
 
 # %% New Directory
 
@@ -44,10 +44,10 @@ placeholders = {
     "{{PACKAGE_NAME}}": parameters["package_name"],
     "{{PROJECT_NAME}}": parameters["project_package_name"],
     "{{LONG_DESCRIPTION}}": parameters["long_description"],
-    "{{SHORT_DESCRIPTION}}": parameters["description"],
+    "{{SHORT_DESCRIPTION}}": parameters["short_description"],
     "{{AUTHOR}}": parameters["author"],
-    "{{CONTACT}}": parameters["contact"],
-    "{{VERSION}}": parameters["version"],
+    "{{CONTACT}}": parameters["email"],
+    "{{VERSION}}": parameters["python_version"],
     "{{DATE}}": date.today().strftime("%d/%m/%Y") + " (Initialization)",
     "{{REQUIRED_PACKAGES}}": parameters["required_packages"],
 }
@@ -72,10 +72,10 @@ subprocess.run(["git", "commit", "-m", "Initial commit"], check=False)  # Commit
 # Rename the default branch to 'master'
 subprocess.run(["git", "branch", "-M", "master"], check=False)
 
-if parameters["remote_url"]:
+if parameters["package_url"]:
     # Set up the upstream repository and push
     push_command = (
-        f"git push --set-upstream git@{parameters['remote_url']}/"
+        f"git push --set-upstream git@{parameters['package_url']}/"
         f"$(git rev-parse --show-toplevel | xargs basename).git "
         f"$(git rev-parse --abbrev-ref HEAD)"
     )
