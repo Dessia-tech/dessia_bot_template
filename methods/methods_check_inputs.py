@@ -50,7 +50,7 @@ def validate_url(url: str) -> None:
 def validate_python_version(version: str) -> None:
     """Validate the Python version format."""
     if not re.match(r"^>=?(\d+\.\d+)$", version):
-        raise ValueError(f"Invalid Python version '{version}'. Example of a valid version: '>=3.8'.")
+        raise ValueError(f"Invalid Python version '{version}'. Example of a valid version: >=3.8.")
 
 
 def validate_required_packages(packages: str) -> None:
