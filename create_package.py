@@ -14,7 +14,7 @@ parameters = get_parameters_from_excel(excel_file="Template_Inputs.xlsx")
 # %% New Directory
 
 # Path to the template directory
-template_dir = "package_foler"
+template_dir = "package_folder"
 new_package_dir = f'../{parameters["project_package_name"]}'
 
 # Copy the template directory to a new location
