@@ -14,7 +14,7 @@ parameters = get_parameters_from_ini_file(ini_file="template_inputs.ini")
 # %% New Directory
 
 # Path to the template directory
-template_dir = "package_foler"
+template_dir = "package_folder"
 new_package_dir = f'../{parameters["project_package_name"]}'
 
 # Copy the template directory to a new location
