@@ -9,6 +9,7 @@ from .methods_check_inputs import (
     validate_python_version,
     validate_required_packages,
     validate_url,
+    transform_url
 )
 
 def read_config_to_dict(file_path: str) -> dict:
@@ -44,6 +45,7 @@ def get_parameters_from_ini_file(ini_file: str) -> dict:
     package_url = parameters["package_url"]
     if package_url:
         validate_url(package_url)
+        parameters["package_url"] = transform_url(package_url)
 
     # %% Short description
 

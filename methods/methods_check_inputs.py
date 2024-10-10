@@ -38,13 +38,21 @@ def validate_url(url: str) -> None:
 
     # if not re.match(r'^gitlab\.com:', url):
     #     raise ValueError(f"\nAre you sure about your 'Package URL' = {url} ? " +\
-    #                      "The package must be sorted in Dessia Organization (as: git@gitlab.com:dessia/XX)")
+    #                      "The package must be sorted in Dessia Organization (as: gitlab.com/dessia/XX)")
 
-    if not re.match(r"^git", url):
+    if not ('gitlab' in url.lower() or 'github' in url.lower()):
         raise ValueError(
             f"\nAre you sure about your 'Package URL' = {url} ? It is not a Git URL\n"
             + "If you do not need to use Git, leave an empty cell."
         )
+
+def transform_url(url: str) -> str:
+    """Transform the given URL to be used for Gitlab pusing."""
+    # Remove 'www.' if present
+    url = url.replace('www.', '', 1)
+
+    # Replace the first '/' with ':'
+    return url.replace('/', ':', 1)
 
 
 def validate_python_version(version: str) -> None:
