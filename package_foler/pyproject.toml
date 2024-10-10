@@ -1,16 +1,15 @@
-[project]
-name = "dessia_bot_template"
-requires-python = ">= 3.9"
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=6.0"]
+build-backend = "setuptools.build_meta"
 
 [tool.ruff]
 line-length = 120
 target-version = "py39"
-exclude = []
 
 [tool.ruff.lint]
 preview = true
 select = [  # https://docs.astral.sh/ruff/rules
-    "E4", "E7", "E9",  # pycodestyle
+    "E4", "E7", "E9",  # pycodestyle coding rules
     "F",  # Pyflakes
     "B",  # flake8-bugbear
     "I",  # isort
@@ -34,3 +33,14 @@ convention = "pep257"
 [tool.codespell]
 skip = ["*.json", "*.html", "*.js", "*.css", ".c", ".h", ".cpp", ".hpp", "*.xml"]
 ignore-words-list = ["dessia"]  # words to ignore from codespell check
+
+[tool.coverage.run]
+source = ["{{PACKAGE_NAME}}"]  # source code directories
+
+[tool.coverage.report]
+omit = []  # modules to omit from coverage analysis
+
+[coverage]
+min_global_coverage = 90  # minimum global coverage percentage
+min_module_coverage = 80  # minimum coverage percentage for each module
+untracked_scripts = []  # not tested scripts (relative path to scripts directory)

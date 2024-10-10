@@ -1,59 +1,76 @@
+# Gitlab CI configuration file for the package.
+# You can use your own specific runner tags and images by changing the values in the tags and image fields
+
 stages:
+  - verify
   - check
   - test
 
 
-check_changelog_update:
-  stage: check
+# Verify that the changelog has been updated
+verify_changelog_update:
+  stage: verify
   tags:
-      - dessia_ubuntu
+    - dessia_ubuntu
   image: python:3.9
   script:
-    - git fetch --depth=1000 origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
-    - if git diff --name-only origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD | grep -q 'CHANGELOG.md'; then echo "Changelog has been updated"; else echo "CHANGELOG.md has not been updated. Update it for the PR to be accepted in CI."; exit 1; fi
+    - git remote set-url origin $CI_REPOSITORY_URL
+    - if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+        git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME --unshallow;
+      else
+        git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME;
+      fi
+    - git fetch origin $CI_COMMIT_REF_NAME
+    - if git diff --name-only origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...origin/$CI_COMMIT_REF_NAME | grep -q 'CHANGELOG.md'; then echo "Changelog has been updated"; else echo "CHANGELOG.md has not been updated. Update it for the PR to be accepted in CI."; exit 1; fi
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
 
-check_code_complexity:
+# Check pre-commit hooks
+check_pre_commit:
   stage: check
   tags:
     - dessia_ubuntu
-  image: dessia/python-ci:3.9
+  image: python:3.9
   script:
-    - pip install numpy Cython>3
-    - pip install pylint==3.2.6 pydocstyle==6.3.0 pre-commit shellcheck-py cython-lint pyenchant==3.2.2
-    - python code_pylint.py
-    - python code_pydocstyle.py
+    - pip install pre-commit shellcheck-py
     - pre-commit run -a
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
 
+# Test the package with unittests and run scripts, and generate coverage report
 install_run_scripts_and_unittests:
   stage: test
   tags:
     - dessia_ubuntu
   image: python:3.9
   script:
-    - cd ..
-    - git clone https://gitlab-ci-token:$CI_JOB_TOKEN@gitlab.com/dessia/sdk/volmdlr.git
-    - cd volmdlr
-    - git checkout master
-    - pip install .
-    - cd ../{{PROJECT_NAME}}
-    - pip install coverage
     - git fetch --tags
-    - pip install .
-    - cd tests
-    - coverage run --rcfile=../.coveragerc --data-file=../.coverage --source {{PACKAGE_NAME}} -m unittest discover -v
-    - cd ../scripts
-    - coverage run --rcfile=../.coveragerc --data-file=../.coverage --source {{PACKAGE_NAME}} -a ci_scripts.py
-    - cd ..
-    - coverage json
-    - coverage report
-    - coverage html
-    - python coverage.py
+    - apt-get update && apt-get install -y libgl1
+    - python3 -m pip install --upgrade pip
+    - pip install git+https://github.com/Dessia-tech/dessia_common.git
+    - pip install git+https://gitlab-ci-token:$CI_JOB_TOKEN@gitlab.com/dessia/sdk/volmdlr.git
+    - pip install -e .[doc,test]
+    - pip install coverage tomli
+    - python3 test.py
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
+
+# Generate dist wheel and source distribution on master branch
+generate_dist_wheel:
+  stage: test
+  tags:
+    - dessia_ubuntu
+  image: python:3.9
+  script:
+    - pip install setuptools wheel
+    - python setup.py sdist bdist_wheel
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "testing"'
+  artifacts:
+    paths:
+      - dist/*.whl
+      - dist/*.tar.gz

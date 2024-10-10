@@ -4,14 +4,14 @@
 
 ## Installation
 
-To install the package, move to the folder next to setup.py and run:
+The package can be installed using pip, from the root directory of the package:
+
 ```bash
-python setup.py install
+pip install -e .
 ```
-or
-```bash
-python3 setup.py install
-```
+> Note: The `-e` flag is optional and used to install the package in editable mode.
+> This allows to modify the package and see the changes without reinstalling it.
+
 ## Usage
 
 See the scripts folder for examples.
@@ -28,4 +28,3 @@ See the scripts folder for examples.
 ## Contact
 
 For any questions or issues, please contact the {{AUTHOR}} at {{CONTACT}}.
-
