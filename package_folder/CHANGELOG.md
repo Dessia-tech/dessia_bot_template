@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Other
 
-   - For miscellaneous changes that don’t fit into the above categories, such as documentation updates or minor tweaks.
+- For miscellaneous changes that don’t fit into the above categories, such as documentation updates or minor tweaks.
 
 
 ## [v0.0.1] - {{DATE}}
