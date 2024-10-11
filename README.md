@@ -168,7 +168,7 @@ MyPackage/
 ├── CHANGELOG.md                  # Changelog for tracking changes
 ├── README.md                     # Main documentation file
 ├── setup.py                      # Installation and package metadata
-├── pyproject.toml                 # Configuration file defining project metadata, dependencies, and tool-specific settings
+├── pyproject.toml                # Configuration file defining project metadata, dependencies, and tool-specific settings
 ├── test.py                       # Test script for running unittests and scripts with coverage
 ├── .gitlab/                      # GitLab configuration files and templates
 │   ├── issue_template.md         # Template for submitting issues
