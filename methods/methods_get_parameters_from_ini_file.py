@@ -4,22 +4,24 @@ import configparser
 
 from .methods_check_inputs import (
     check_pypi_package_name,
+    transform_url,
     validate_email,
     validate_package_name,
     validate_python_version,
     validate_required_packages,
     validate_url,
-    transform_url
 )
 
+
 def read_config_to_dict(file_path: str) -> dict:
+    """"Read a configuration file and returns its contents as a dictionary, excluding the 'DOCUMENTATION' section."""
     config = configparser.ConfigParser()
     config.read(file_path)
 
     config_dict = {}
 
     for section in config.sections():
-        if section !="DOCUMENTATION":
+        if section != "DOCUMENTATION":
             for key, value in config[section].items():
                 config_dict[key] = value.strip()
 
@@ -28,7 +30,6 @@ def read_config_to_dict(file_path: str) -> dict:
 
 def get_parameters_from_ini_file(ini_file: str) -> dict:
     """Get the parameters from an ini file."""
-
     parameters = read_config_to_dict(ini_file)
 
     # %% Package name
