@@ -9,8 +9,9 @@ from .methods_check_inputs import (
     validate_python_version,
     validate_required_packages,
     validate_url,
-    transform_url
+    transform_url,
 )
+
 
 def read_config_to_dict(file_path: str) -> dict:
     config = configparser.ConfigParser()
@@ -19,7 +20,7 @@ def read_config_to_dict(file_path: str) -> dict:
     config_dict = {}
 
     for section in config.sections():
-        if section !="DOCUMENTATION":
+        if section != "DOCUMENTATION":
             for key, value in config[section].items():
                 config_dict[key] = value.strip()
 

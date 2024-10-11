@@ -40,19 +40,20 @@ def validate_url(url: str) -> None:
     #     raise ValueError(f"\nAre you sure about your 'Package URL' = {url} ? " +\
     #                      "The package must be sorted in Dessia Organization (as: gitlab.com/dessia/XX)")
 
-    if not ('gitlab' in url.lower() or 'github' in url.lower()):
+    if not ("gitlab" in url.lower() or "github" in url.lower()):
         raise ValueError(
             f"\nAre you sure about your 'Package URL' = {url} ? It is not a Git URL\n"
             + "If you do not need to use Git, leave an empty cell."
         )
 
+
 def transform_url(url: str) -> str:
     """Transform the given URL to be used for Gitlab pusing."""
     # Remove 'www.' if present
-    url = url.replace('www.', '', 1)
+    url = url.replace("www.", "", 1)
 
     # Replace the first '/' with ':'
-    return url.replace('/', ':', 1)
+    return url.replace("/", ":", 1)
 
 
 def validate_python_version(version: str) -> None:
