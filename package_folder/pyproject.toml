@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=6.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+preview = true
+select = [  # https://docs.astral.sh/ruff/rules
+    "E4", "E7", "E9",  # pycodestyle coding rules
+    "F",  # Pyflakes
+    "B",  # flake8-bugbear
+    "I",  # isort
+    "N",  # pep8-naming
+    "D",  # pydocstyle documentation
+    "UP", # pyupgrade
+    "ANN001",  # missing type annotation for function arguments
+    "ANN201",  # missing type annotation for function return value
+    "PL",  # pylint
+    "NPY",  # NumPy-specific rules
+    "PERF",  # Perflint
+    "RUF",  # Ruff-specific rules
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["D"]  # documenting the unit tests is not necessary
+
+[tool.codespell]
+skip = ["*.json", "*.html", "*.js", "*.css", ".c", ".h", ".cpp", ".hpp", "*.xml"]
+ignore-words-list = ["dessia"]  # words to ignore from codespell check
+
+[tool.coverage.run]
+source = ["{{PACKAGE_NAME}}"]  # source code directories
+
+[tool.coverage.report]
+omit = []  # modules to omit from coverage analysis
+
+[coverage]
+min_global_coverage = 90  # minimum global coverage percentage
+min_module_coverage = 80  # minimum coverage percentage for each module
+untracked_scripts = []  # not tested scripts (relative path to scripts directory)
