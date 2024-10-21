@@ -65,21 +65,20 @@ print(f"\nThe package '{parameters['package_name']}' has been successfully gener
 
 # Initialize a new Git repository
 os.chdir(new_package_dir)  # Change directory to the new package directory
-subprocess.run(["git", "init"], check=False)  # Initialize a new git repository
-subprocess.run(["git", "add", "."], check=False)  # Add all files to staging
-subprocess.run(["git", "commit", "-m", "Initial commit"], check=False)  # Commit the changes
+subprocess.run(["git", "init"], check=True)  # Initialize a new git repository
+subprocess.run(["git", "add", "."], check=True)  # Add all files to staging
+subprocess.run(["git", "commit", "-m", "Initial commit"], check=True)  # Commit the changes
 
 # Rename the default branch to 'master'
-subprocess.run(["git", "branch", "-M", "master"], check=False)
+subprocess.run(["git", "branch", "-M", "master"], check=True)
 
 if parameters["package_url"]:
-    # Set up the upstream repository and push
-    push_command = (
-        f"git push --set-upstream git@{parameters['package_url']}/"
-        f"$(git rev-parse --show-toplevel | xargs basename).git "
-        f"$(git rev-parse --abbrev-ref HEAD)"
-    )
-    subprocess.run(push_command, shell=True, check=False)
+    # Set up the remote repository
+    remote_url = f"git@{parameters['package_url']}/{parameters['project_package_name']}.git"
+    subprocess.run(["git", "remote", "add", "origin", remote_url], check=True)
+
+    # Push to the remote repository
+    subprocess.run(["git", "push", "-u", "origin", "master"], check=True)
 
     print(f"\nA new Git repository has been initialized in {new_package_dir}.")
 
