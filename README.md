@@ -120,7 +120,7 @@ After filling in the .ini inputs file, run the create_package.py script to gener
 
    - Log in to your GitHub account
    - Click the "+" icon in the top-right corner and select "New repository"
-   - Choose a project name for your repository (the directory containing your package): The project name is the CamelCase version of the package name choosen in the .ini inputs file
+   - Choose a project name for your repository (the directory containing your package): The project name is the CamelCase version of the package name chosen in the .ini inputs file
    - Do not initialize the repository with a README, .gitignore, or license
    - Click "Create repository"
 
