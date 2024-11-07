@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Remove numpy dependency in unit tests
+
 ### Security
 
 ### Performance
@@ -63,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- ‎Update README.md
+- Update README.md
 
 ## [v0.1.0] - 07/01/2021
 
@@ -73,5 +75,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v0.0.1] - 22/10/2020 (Initialization)
-
-
