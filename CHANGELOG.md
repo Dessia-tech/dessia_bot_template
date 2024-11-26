@@ -5,29 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v2.0.0] - Unreleased
+## [v2.0.0-rc.2] - 26/11/2024
 
 ### Added
 
 - Set up the remote repository to the new local Git repository
 - Add CI trigger on tag push for dist build
-- Update files extentions to skip in codespell
-
-### Changed
-
-### Deprecated
-
-### Removed
+- Update files extensions to skip in codespell
 
 ### Fixed
 
 - Remove numpy dependency in unit tests
-
-### Security
-
-### Performance
-
-### Other
 
 
 ## [v2.0.0-rc.1] - 11/10/2024
