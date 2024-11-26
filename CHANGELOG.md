@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Set up the remote repository to the new local Git repository
 - Add CI trigger on tag push for dist build
+- Update files extentions to skip in codespell
 
 ### Changed
 
