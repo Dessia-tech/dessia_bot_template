@@ -14,7 +14,7 @@ from .methods_check_inputs import (
 
 
 def read_config_to_dict(file_path: str) -> dict:
-    """"Read a configuration file and returns its contents as a dictionary, excluding the 'DOCUMENTATION' section."""
+    """Read a configuration file and returns its contents as a dictionary, excluding the 'DOCUMENTATION' section."""
     config = configparser.ConfigParser()
     config.read(file_path)
 
