@@ -1,12 +1,10 @@
 import unittest
 
-import numpy as np
-
 
 class TestClassName(unittest.TestCase):
     def test_method_name(self) -> None:
         results = [0, 3, 0]
-        self.assertTrue(np.all(results == np.array([0, 3, 0])))
+        self.assertEqual([0, 3, 0], results)
 
 
 if __name__ == "__main__":
