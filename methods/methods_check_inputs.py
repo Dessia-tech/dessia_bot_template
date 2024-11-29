@@ -2,9 +2,10 @@
 
 import re
 from http import HTTPStatus
+from urllib.parse import urlparse
 
 import requests
-from urllib.parse import urlparse, urlunparse
+
 
 def validate_package_name(name: str) -> None:
     """Check if the package name follows Python naming conventions."""
@@ -61,7 +62,7 @@ def transform_url(url: str) -> str:
         parsed = urlparse(url)
 
     new_url = f"{parsed.netloc}:{parsed.path.lstrip('/')}"
-    new_url = new_url.rstrip('/')
+    new_url = new_url.rstrip("/")
 
     return new_url
 

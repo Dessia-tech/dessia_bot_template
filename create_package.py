@@ -88,8 +88,10 @@ if parameters["package_url"]:
         print("Please check your GitLab access and permissions.")
 
         if not ("gitlab" in parameters["package_url"].lower() or "github" in parameters["package_url"].lower()):
-            print("\nAre you sure about your 'Package URL' ? It seems that is not a Git URL\n"
-                + "If you do not need to use Git, leave an empty cell.")
+            print(
+                "\nAre you sure about your 'Package URL' ? It seems that is not a Git URL\n"
+                + "If you do not need to use Git, leave an empty cell."
+            )
 
 else:
     print(f"\nA new local Git repository has been initialized in {new_package_dir}.")

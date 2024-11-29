@@ -9,7 +9,6 @@ from .methods_check_inputs import (
     validate_package_name,
     validate_python_version,
     validate_required_packages,
-    validate_url,
 )
 
 
