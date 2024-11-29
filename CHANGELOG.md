@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [v2.0.0] - Unreleased
+
+### Added
+
+- Add error handling for Git repository initialization and push operations, providing clearer feedback on GitLab access and permission issues
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+- Enhance URL handling to support various formats and types
+
+### Security
+
+### Performance
+
+### Other
+
+
 ## [v2.0.0-rc.2] - 26/11/2024
 
 ### Added

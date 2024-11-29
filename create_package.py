@@ -73,14 +73,25 @@ subprocess.run(["git", "commit", "-m", "Initial commit"], check=True)  # Commit 
 subprocess.run(["git", "branch", "-M", "master"], check=True)
 
 if parameters["package_url"]:
-    # Set up the remote repository
-    remote_url = f"git@{parameters['package_url']}/{parameters['project_package_name']}.git"
-    subprocess.run(["git", "remote", "add", "origin", remote_url], check=True)
+    try:
+        # Set up the remote repository
+        remote_url = f"git@{parameters['package_url']}/{parameters['project_package_name']}.git"
+        subprocess.run(["git", "remote", "add", "origin", remote_url], check=True)
 
-    # Push to the remote repository
-    subprocess.run(["git", "push", "-u", "origin", "master"], check=True)
+        # Push to the remote repository
+        subprocess.run(["git", "push", "-u", "origin", "master"], check=True)
 
-    print(f"\nA new Git repository has been initialized in {new_package_dir}.")
+        print(f"\nA new Git repository has been initialized in {new_package_dir}.")
+
+    except:
+        print("\nAn error occurred")
+        print("Please check your GitLab access and permissions.")
+
+        if not ("gitlab" in parameters["package_url"].lower() or "github" in parameters["package_url"].lower()):
+            print(
+                "\nAre you sure about your 'Package URL' ? It seems that is not a Git URL\n"
+                + "If you do not need to use Git, leave an empty cell."
+            )
 
 else:
     print(f"\nA new local Git repository has been initialized in {new_package_dir}.")
