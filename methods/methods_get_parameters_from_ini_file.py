@@ -45,7 +45,7 @@ def get_parameters_from_ini_file(ini_file: str) -> dict:
 
     package_url = parameters["package_url"]
     if package_url:
-        validate_url(package_url)
+        # validate_url(package_url)
         parameters["package_url"] = transform_url(package_url)
 
     # %% Short description
