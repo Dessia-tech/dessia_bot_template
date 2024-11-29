@@ -4,7 +4,7 @@ import re
 from http import HTTPStatus
 
 import requests
-
+from urllib.parse import urlparse, urlunparse
 
 def validate_package_name(name: str) -> None:
     """Check if the package name follows Python naming conventions."""
@@ -52,8 +52,18 @@ def transform_url(url: str) -> str:
     # Remove 'www.' if present
     url = url.replace("www.", "", 1)
 
-    # Replace the first '/' with ':'
-    return url.replace("/", ":", 1)
+    # # Replace the first '/' with ':'
+    # return url.replace("/", ":", 1)
+
+    parsed = urlparse(url)
+    if not parsed.scheme:
+        url = f"https://{url}"
+        parsed = urlparse(url)
+
+    new_url = f"{parsed.netloc}:{parsed.path.lstrip('/')}"
+    new_url = new_url.rstrip('/')
+
+    return new_url
 
 
 def validate_python_version(version: str) -> None:

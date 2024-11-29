@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Enhance URL handling to support various formats and types
+
 ### Security
 
 ### Performance
