@@ -66,8 +66,8 @@ generate_dist_wheel:
     - dessia_ubuntu
   image: python:3.9
   script:
-    - pip install setuptools wheel
-    - python setup.py sdist bdist_wheel
+    - pip install build
+    - python -m build --wheel
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
     - if: '$CI_COMMIT_BRANCH == "testing"'
