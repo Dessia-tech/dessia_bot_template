@@ -5,6 +5,7 @@ stages:
   - verify
   - check
   - test
+  - review
   - build
 
 
@@ -57,6 +58,78 @@ install_run_scripts_and_unittests:
     - python3 test.py
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+
+# Check merge request approvals
+check_mr_approval:
+  stage: review
+  image: alpine
+  before_script:
+    - apk add --no-cache curl jq
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  script: |-
+    echo "Checking merge request approvals..."
+
+    MR_ID=$CI_MERGE_REQUEST_IID
+    echo "MR ID : $MR_ID"
+
+    # Check if the pipeline is linked to a merge request
+    if [ -z "$CI_MERGE_REQUEST_IID" ]; then
+      echo "❌ Error: This pipeline is not linked to a merge request."
+      exit 1
+    fi
+
+    # Check project ID and token permissions
+    echo "Checking API access using project ID ($CI_PROJECT_ID)"
+
+    # Check if the project is accessible
+    PROJECT_INFO=$(curl --silent --header "PRIVATE-TOKEN: $MR_CHECK_TOKEN" \
+      "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID")
+
+    if [[ "$PROJECT_INFO" == *"404"* ]]; then
+      echo "❌ Error 404: Project not found. Check token permissions."
+      exit 1
+    fi
+
+    # Fetch merge request info
+    MR_INFO=$(curl --silent --header "PRIVATE-TOKEN: $MR_CHECK_TOKEN" \
+      "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/merge_requests/$MR_ID")
+
+    MR_AUTHOR=$(echo "$MR_INFO" | jq -r '.author.username')
+
+    # Fetch merge request approvals
+    APPROVALS=$(curl --silent --header "PRIVATE-TOKEN: $MR_CHECK_TOKEN" \
+      "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/merge_requests/$MR_ID/approvals")
+
+    # Extract approval usernames
+    APPROVERS=$(echo "$APPROVALS" | jq -r '.approved_by // [] | .[].user.username')
+
+    echo "----------------------------------------"
+    echo "Merge Request #$MR_ID"
+    echo "Author        : $MR_AUTHOR"
+    echo "Approved by   :"
+    if [ -z "$APPROVERS" ]; then
+      echo "  (no approval)"
+    else
+      echo "$APPROVERS" | sed 's/^/  - /'
+    fi
+    echo "----------------------------------------"
+
+    # Check if approved by someone other than the author
+    APPROVED=false
+    for user in $APPROVERS; do
+      if [ "$user" != "$MR_AUTHOR" ]; then
+        APPROVED=true
+      fi
+    done
+
+    if [ "$APPROVED" = false ]; then
+      echo "❌ Error: Merge request must be approved by someone other than the author."
+      exit 1
+    else
+      echo "✅ OK: Valid approval. Merge allowed."
+    fi
 
 
 # Generate dist wheel and source distribution on master branch

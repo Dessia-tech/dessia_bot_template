@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add error handling for Git repository initialization and push operations, providing clearer feedback on GitLab access and permission issues
+- Check merge request approvals during CI
 
 ### Changed
 
