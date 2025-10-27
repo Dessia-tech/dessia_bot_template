@@ -9,7 +9,7 @@ stages:
   - build
 
 
-# Verify that the changelog has been updated
+# Verify that the CHANGELOG has been updated
 verify_changelog_update:
   stage: verify
   tags:
@@ -26,6 +26,25 @@ verify_changelog_update:
     - if git diff --name-only origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...origin/$CI_COMMIT_REF_NAME | grep -q 'CHANGELOG.md'; then echo "Changelog has been updated"; else echo "CHANGELOG.md has not been updated. Update it for the PR to be accepted in CI."; exit 1; fi
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+
+# Verify that the README has been updated
+verify_readme_update:
+  stage: verify
+  tags:
+    - dessia_ubuntu
+  image: python:3.9
+  script:
+    - git remote set-url origin $CI_REPOSITORY_URL
+    - if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+        git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME --unshallow;
+      else
+        git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME;
+      fi
+    - git fetch origin $CI_COMMIT_REF_NAME
+    - if git diff --name-only origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...origin/$CI_COMMIT_REF_NAME | grep -q 'README.md'; then echo "README has been updated"; else echo "README.md has not been updated. Update it for the PR to be accepted in CI."; exit 1; fi
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
 
 
 # Check pre-commit hooks
