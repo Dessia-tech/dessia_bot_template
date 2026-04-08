@@ -2,6 +2,31 @@
 requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=6.0"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "{{PACKAGE_NAME}}"
+dynamic = ["version"]
+description = "{{SHORT_DESCRIPTION}}"
+readme = "README.md"
+requires-python = "{{VERSION}}"
+authors = [
+    {name = "{{AUTHOR}}", email = "{{CONTACT}}"},
+]
+dependencies = [
+{{REQUIRED_PACKAGES_TOML}}]
+
+[dependency-groups]
+test = [
+    "coverage>=7.0",
+    "tomli>=2.0",
+]
+
+[tool.setuptools_scm]
+fallback_version = "0.0.1"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["{{PACKAGE_NAME}}*"]
+
 [tool.ruff]
 line-length = 120
 target-version = "py39"
@@ -35,7 +60,7 @@ skip = ["*.json", "*.html", "*.js", "*.css", "*.c", "*.h", "*.cpp", "*.hpp", "*.
 ignore-words-list = ["dessia"]  # words to ignore from codespell check
 
 [tool.coverage.run]
-source = ["{{PACKAGE_NAME}}"]  # source code directories
+source = ["src/{{PACKAGE_NAME}}"]  # source code directories
 
 [tool.coverage.report]
 omit = []  # modules to omit from coverage analysis
@@ -44,3 +69,23 @@ omit = []  # modules to omit from coverage analysis
 min_global_coverage = 90  # minimum global coverage percentage
 min_module_coverage = 80  # minimum coverage percentage for each module
 untracked_scripts = []  # not tested scripts (relative path to scripts directory)
+
+[tool.uv]
+required-environments = [
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
+    "sys_platform == 'win32' and platform_machine == 'AMD64'",
+]
+prerelease = "if-necessary-or-explicit"
+exclude-newer = "1 week"
+
+[tool.uv.exclude-newer-package]
+{{EXCLUDE_NEWER_PACKAGES_TOML}}
+
+[[tool.uv.index]]
+name = "gitlab"
+url = "https://gitlab.com/api/v4/groups/84499690/-/packages/pypi/simple"
+authenticate = "always"
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"

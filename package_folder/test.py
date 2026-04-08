@@ -10,16 +10,21 @@ from typing import Any, Optional
 
 import tomli
 
+PROJECT_ROOT = Path(__file__).parent.resolve()
+COVERAGE_FILE = str(PROJECT_ROOT / ".coverage")
+COVERAGE_RCFILE = str(PROJECT_ROOT / "pyproject.toml")
+COVERAGE_SOURCE = str(PROJECT_ROOT / "src" / "{{PACKAGE_NAME}}")
+
 
 def setup_environment() -> None:
     """Set up environment variables for coverage."""
-    os.environ["COVERAGE_FILE"] = str(Path(__file__).parent.resolve() / ".coverage")
-    os.environ["COVERAGE_RCFILE"] = str(Path(__file__).parent.resolve() / "pyproject.toml")
+    os.environ["COVERAGE_FILE"] = COVERAGE_FILE
+    os.environ["COVERAGE_RCFILE"] = COVERAGE_RCFILE
 
 
 def load_config() -> dict[str, Any]:
     """Load configuration file."""
-    with open(str(Path(__file__).parent.resolve() / "pyproject.toml"), "rb") as file:
+    with open((PROJECT_ROOT / "pyproject.toml").as_posix(), "rb") as file:
         config = tomli.load(file)
 
     # Extract the [coverage] section
@@ -30,7 +35,16 @@ def load_config() -> dict[str, Any]:
 def run_unittests_coverage() -> int:
     """Run coverage on unittests."""
     result = subprocess.run(
-        ["coverage", "run", "-m", "unittest", "discover", "-v"],
+        [
+            "coverage",
+            "run",
+            f"--data-file={COVERAGE_FILE}",
+            f"--source={COVERAGE_SOURCE}",
+            "-m",
+            "unittest",
+            "discover",
+            "-v",
+        ],
         check=False,
     )
     return result.returncode
@@ -45,11 +59,11 @@ def run_scripts_coverage(untracked_scripts: Optional[list[str]] = None) -> int:
     for script in scripts_dir.rglob("*.py"):
         script_path = script.relative_to(scripts_dir)
 
-        if str(script_path) not in untracked_scripts:
+        if script_path.as_posix() not in untracked_scripts:
             print(f"\n  * Running {script_path}")
             start = time.perf_counter()
             result = subprocess.run(
-                ["coverage", "run", "-a", script.name],
+                ["coverage", "run", f"--data-file={COVERAGE_FILE}", f"--source={COVERAGE_SOURCE}", "-a", script.name],
                 cwd=script.parent,
                 check=False,
                 text=True,
@@ -68,7 +82,7 @@ def check_coverage_thresholds(config: dict[str, Any]) -> int:
     returncode = 0
 
     # Generate JSON coverage report
-    subprocess.run(["coverage", "json"], check=True)
+    subprocess.run(["coverage", "json", f"--data-file={COVERAGE_FILE}"], check=True)
 
     # Load JSON coverage report
     with open("coverage.json", encoding="utf-8") as file:
@@ -112,8 +126,9 @@ def main() -> None:
 
     print("\n> CHECKING COVERAGE")
     time.sleep(1)
-    subprocess.run(["coverage", "report", "-m"], check=False)
-    subprocess.run(["coverage", "html", "-d", "htmlcov", "-q"], check=False)
+    subprocess.run(["coverage", "report", f"--data-file={COVERAGE_FILE}", "-m"], check=False)
+    subprocess.run(["coverage", "html", f"--data-file={COVERAGE_FILE}", "-d", "htmlcov", "-q"], check=False)
+    subprocess.run(["coverage", "xml", f"--data-file={COVERAGE_FILE}", "-o", "coverage.xml", "-q"], check=False)
 
     coverage_returncode = check_coverage_thresholds(config)
 
