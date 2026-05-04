@@ -6,6 +6,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [v3.0.0] - Unreleased
+
+### Added
+
+- Adopt `src/` layout: package source code moved to `src/<package_name>/`
+- Add full `[project]` section in `pyproject.toml` (name, version, description, authors, dependencies)
+- Add `[dependency-groups]` (PEP 735) with `test` group (`coverage`, `tomli`) in generated `pyproject.toml`
+- Add `fallback_version = "0.0.1"` in `[tool.setuptools_scm]` for environments without git or setuptools_scm
+- Add `[tool.setuptools.packages.find]` with `where = ["src"]` for src layout support
+- Add `[tool.uv]` configuration: `required-environments`, `prerelease`, `exclude-newer`, `[tool.uv.exclude-newer-package]`
+- Add GitLab and PyPI index configuration via `[[tool.uv.index]]` in generated `pyproject.toml`
+- Integrate CI templates from `dessia/sdk/ci-templates` in generated `.gitlab-ci.yml`
+- Update `package_folder/.pre-commit-config.yaml`: ruff `v0.15.0` (`ruff-check` hook), codespell `v2.4.1`, pre-commit-hooks `v6.0.0`
+- Add `coverage xml` output in `test.py`
+- Add module-level constants in `test.py` (`PROJECT_ROOT`, `COVERAGE_FILE`, `COVERAGE_RCFILE`, `COVERAGE_SOURCE`)
+- Add `{{EXCLUDE_NEWER_PACKAGES_TOML}}` placeholder: auto-generates `[tool.uv.exclude-newer-package]` from input dependencies
+- Update default dependencies: `dessia_common>=1.0.3`, `volmdlr>=0.21.1`, `plot_data>=0.27.6`
+- Update default `python_version` to `>=3.12`
+
+### Changed
+
+- Replace `setup.py` with a minimal compatibility wrapper reading metadata from `pyproject.toml`
+- Replace inline CI jobs with `extends:` from ci-templates (verify changelog, pre-commit, dist wheel, install/test)
+- All `coverage` commands now use explicit `--data-file` and `--source` arguments in `test.py`
+- Script path comparison in `test.py` uses `.as_posix()` for cross-platform consistency
+- `{{REQUIRED_PACKAGES}}` replaced by `{{REQUIRED_PACKAGES_TOML}}`: dependencies formatted as proper TOML array
+- `create_package.py` updated for src layout: renames `src/folder` → `src/<package_name>`
+- Skip binary files in `replace_placeholders` to avoid `UnicodeDecodeError`
+
+
 ## [v2.0.0] - 04/05/2026
 
 ### Added

@@ -1,26 +1,18 @@
-"""Setup file."""
+"""Minimal setup file for platform < 3.1 compatibility."""
 
-from setuptools import find_packages, setup
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
 
+from setuptools import setup
 
-def readme() -> str:
-    """Read the README file."""
-    with open("README.md", encoding="utf-8") as f:
-        return f.read()
+with open("pyproject.toml", "rb") as f:
+    pyproject = tomllib.load(f)
 
-
-install_requires = ["{{REQUIRED_PACKAGES}}"][0].split(",")
+project = pyproject.get("project", {})
 
 setup(
-    name="{{PACKAGE_NAME}}",
-    use_scm_version=True,
-    setup_requires=["setuptools_scm"],
-    description="{{SHORT_DESCRIPTION}}",
-    long_description=readme(),
-    long_description_content_type="text/markdown",
-    author="{{AUTHOR}}",
-    author_email="{{CONTACT}}",
-    install_requires=install_requires,
-    python_requires="{{VERSION}}",
-    packages=find_packages(),
+    name=project.get("name"),
+    description=project.get("description"),
 )
