@@ -35,7 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `create_package.py` updated for src layout: renames `src/folder` → `src/<package_name>`
 - Skip binary files in `replace_placeholders` to avoid `UnicodeDecodeError`
 
-## [v2.0.0] - Unreleased
+
+## [v2.0.0] - 04/05/2026
 
 ### Added
 
