@@ -27,7 +27,7 @@ This template simplifies the process of starting a new Python project, allowing 
     Automatically creates a well-organized directory structure following the modern Python `src` layout, ensuring your project is easy to navigate and adheres to Python best practices.
 
    - **`pyproject.toml` as Single Source of Truth:**
-    All package metadata, dependencies, versioning, and tool configuration are defined in a single `pyproject.toml` file. A minimal `setup.py` wrapper is kept for compatibility with older platforms.
+    All package metadata, dependencies, versioning, and tool configuration are defined in a single `pyproject.toml` file. No `setup.py` is needed.
 
    - **Automatic Versioning with Fallback:**
     Uses `setuptools_scm` to derive the package version from git tags. A `fallback_version` is configured to ensure wheel builds work even when git or `setuptools_scm` is unavailable (e.g. on client environments).
@@ -126,7 +126,7 @@ python3 create_package.py
 The script will:
 
    - Create a new directory for your package.
-   - Populate it with the necessary files (e.g., `pyproject.toml`, `setup.py`, `README.md`, `.gitlab-ci.yml`, etc.).
+   - Populate it with the necessary files (e.g., `pyproject.toml`, `README.md`, `.gitlab-ci.yml`, etc.).
    - Format your dependencies as a proper TOML array in `pyproject.toml`.
 
 3. **After Generation**
@@ -158,7 +158,6 @@ MyPackage/
 │   └── test_example.py           # Example test file
 ├── CHANGELOG.md                  # Changelog for tracking changes
 ├── README.md                     # Main documentation file
-├── setup.py                      # Minimal compatibility wrapper (reads from pyproject.toml)
 ├── pyproject.toml                # Single source of truth: metadata, dependencies, tools, uv config
 ├── test.py                       # Test script for running unittests and scripts with coverage
 ├── .gitlab/                      # GitLab configuration files and templates

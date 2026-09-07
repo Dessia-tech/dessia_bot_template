@@ -59,7 +59,6 @@ MyPackage/
 ├── scripts/                      # Directory for utility scripts related to the package
 ├── workflows/                    # Directory for the different workflows used in the platform
 ├── tests/                        # Directory for unit tests
-├── setup.py                      # Installation and package metadata
 ├── pyproject.toml                # Configuration file defining project metadata, dependencies, and tool-specific settings
 └── test.py                       # Test script for running unittests and scripts with coverage
 ```

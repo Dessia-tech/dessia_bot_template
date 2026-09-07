@@ -28,13 +28,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Replace `setup.py` with a minimal compatibility wrapper reading metadata from `pyproject.toml`
 - Replace inline CI jobs with `extends:` from ci-templates (verify changelog, pre-commit, dist wheel, install/test)
 - All `coverage` commands now use explicit `--data-file` and `--source` arguments in `test.py`
 - Script path comparison in `test.py` uses `.as_posix()` for cross-platform consistency
 - `{{REQUIRED_PACKAGES}}` replaced by `{{REQUIRED_PACKAGES_TOML}}`: dependencies formatted as proper TOML array
 - `create_package.py` updated for src layout: renames `src/folder` → `src/<package_name>`
 - Skip binary files in `replace_placeholders` to avoid `UnicodeDecodeError`
+
+### Removed
+
+- Remove `setup.py`: `pyproject.toml` alone is enough to build and install the package
 
 
 ## [v2.0.0] - 04/05/2026
