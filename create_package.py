@@ -43,6 +43,18 @@ def replace_placeholders(_file_path: str, _placeholders: dict) -> None:
         file.write(content)
 
 
+# Derive ruff's target-version from the required python version (">=3.12" -> "py312")
+python_version_match = re.search(r"(\d+)\.(\d+)", parameters["python_version"])
+if python_version_match:
+    ruff_target_version = f"py{python_version_match.group(1)}{python_version_match.group(2)}"
+else:
+    ruff_target_version = "py312"
+    print(
+        f"WARNING: could not parse python_version '{parameters['python_version']}', "
+        f"falling back to ruff target-version '{ruff_target_version}'."
+    )
+
+
 # Format required_packages as a TOML array for pyproject.toml
 packages_str = parameters["required_packages"]
 if packages_str and packages_str.strip():
@@ -63,6 +75,7 @@ placeholders = {
     "{{AUTHOR}}": parameters["author"],
     "{{CONTACT}}": parameters["email"],
     "{{VERSION}}": parameters["python_version"],
+    "{{RUFF_TARGET_VERSION}}": ruff_target_version,
     "{{DATE}}": date.today().strftime("%d/%m/%Y") + " (Initialization)",
     "{{REQUIRED_PACKAGES_TOML}}": toml_packages,
     "{{EXCLUDE_NEWER_PACKAGES_TOML}}": exclude_newer_packages,

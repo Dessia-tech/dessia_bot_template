@@ -29,7 +29,7 @@ include = ["{{PACKAGE_NAME}}*"]
 
 [tool.ruff]
 line-length = 120
-target-version = "py39"
+target-version = "{{RUFF_TARGET_VERSION}}"
 
 [tool.ruff.lint]
 preview = true
