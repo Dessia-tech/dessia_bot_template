@@ -80,12 +80,3 @@ exclude-newer = "1 week"
 
 [tool.uv.exclude-newer-package]
 {{EXCLUDE_NEWER_PACKAGES_TOML}}
-
-[[tool.uv.index]]
-name = "gitlab"
-url = "https://gitlab.com/api/v4/groups/84499690/-/packages/pypi/simple"
-authenticate = "always"
-
-[[tool.uv.index]]
-name = "pypi"
-url = "https://pypi.org/simple"

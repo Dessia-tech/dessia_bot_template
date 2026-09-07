@@ -16,7 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `fallback_version = "0.0.1"` in `[tool.setuptools_scm]` for environments without git or setuptools_scm
 - Add `[tool.setuptools.packages.find]` with `where = ["src"]` for src layout support
 - Add `[tool.uv]` configuration: `required-environments`, `prerelease`, `exclude-newer`, `[tool.uv.exclude-newer-package]`
-- Add GitLab and PyPI index configuration via `[[tool.uv.index]]` in generated `pyproject.toml`
 - Integrate CI templates from `dessia/sdk/ci-templates` in generated `.gitlab-ci.yml`
 - Update `package_folder/.pre-commit-config.yaml`: ruff `v0.15.0` (`ruff-check` hook), codespell `v2.4.1`, pre-commit-hooks `v6.0.0`
 - Add `coverage xml` output in `test.py`
@@ -38,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Remove `setup.py`: `pyproject.toml` alone is enough to build and install the package
+- Remove `[[tool.uv.index]]` blocks from the generated `pyproject.toml`: indexes come from the CI (`UV_DEFAULT_INDEX`/`UV_INDEX`), keeping generated packages usable without access to the private registry
 
 
 ## [v2.0.0] - 04/05/2026

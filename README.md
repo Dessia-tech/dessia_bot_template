@@ -33,7 +33,7 @@ This template simplifies the process of starting a new Python project, allowing 
     Uses `setuptools_scm` to derive the package version from git tags. A `fallback_version` is configured to ensure wheel builds work even when git or `setuptools_scm` is unavailable (e.g. on client environments).
 
    - **`uv` Package Manager Support:**
-    The generated package is pre-configured for `uv` with GitLab private registry and PyPI index support, `required-environments`, `prerelease` handling, and `exclude-newer` protection against recent supply chain attacks.
+    The generated package is pre-configured for `uv` with `required-environments`, `prerelease` handling, and `exclude-newer` protection against recent supply chain attacks. Package indexes are not declared in `pyproject.toml`: the CI provides them (`UV_DEFAULT_INDEX`/`UV_INDEX` in the `ci-templates` `common.yml`), so a generated package stays usable by users without access to the Dessia private registry.
 
    - **Dependency Groups (PEP 735):**
     Development and test dependencies are managed via `[dependency-groups]`, natively supported by `uv`.
