@@ -12,14 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Adopt `src/` layout: package source code moved to `src/<package_name>/`
 - Add full `[project]` section in `pyproject.toml` (name, version, description, authors, dependencies)
-- Add `[dependency-groups]` (PEP 735) with `test` group (`coverage`, `tomli`) in generated `pyproject.toml`
+- Add `[dependency-groups]` (PEP 735) with `test` group (`pytest`, `coverage`, `tomli`) in generated `pyproject.toml`
+- Add `[tool.pytest.ini_options]` (`testpaths`, `addopts`) and `core = "sysmon"` in `[tool.coverage.run]`
 - Add `fallback_version = "0.0.1"` in `[tool.setuptools_scm]` for environments without git or setuptools_scm
 - Add `[tool.setuptools.packages.find]` with `where = ["src"]` for src layout support
 - Add `[tool.uv]` configuration: `required-environments`, `prerelease`, `exclude-newer`, `[tool.uv.exclude-newer-package]`
 - Integrate CI templates from `dessia/sdk/ci-templates` in generated `.gitlab-ci.yml`
 - Update `package_folder/.pre-commit-config.yaml`: ruff `v0.15.0` (`ruff-check` hook), codespell `v2.4.1`, pre-commit-hooks `v6.0.0`
-- Add `coverage xml` output in `test.py`
-- Add module-level constants in `test.py` (`PROJECT_ROOT`, `COVERAGE_FILE`, `COVERAGE_RCFILE`, `COVERAGE_SOURCE`)
 - Add `{{EXCLUDE_NEWER_PACKAGES_TOML}}` placeholder: auto-generates `[tool.uv.exclude-newer-package]` from input dependencies
 - Update default dependencies: `dessia_common>=1.0.3`, `volmdlr>=0.21.1`, `plot_data>=0.27.6`
 - Update default `python_version` to `>=3.12`
@@ -28,8 +27,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Replace inline CI jobs with `extends:` from ci-templates (verify changelog, pre-commit, dist wheel, install/test)
-- All `coverage` commands now use explicit `--data-file` and `--source` arguments in `test.py`
-- Script path comparison in `test.py` uses `.as_posix()` for cross-platform consistency
+- Migrate `test.py` to the runner from `dessia/sdk/experimental/templates/package-template` (doc build excluded,
+  since generated packages have no `doc/` folder): unit tests now run through `pytest`, with selective execution
+  (`--unittests`, `--scripts`, `--modified-scripts`, `--coverage`), JUnit reports (`report.xml`,
+  `scripts-report.xml`) for the CI test widget, and glob matching for `untracked_scripts`
+- Scripts no longer contribute to coverage: `test.py` runs them without the coverage tracer
+- Lower default coverage thresholds to `min_global_coverage = 70` / `min_module_coverage = 65`, aligned with
+  `package-template`
 - `{{REQUIRED_PACKAGES}}` replaced by `{{REQUIRED_PACKAGES_TOML}}`: dependencies formatted as proper TOML array
 - `create_package.py` updated for src layout: renames `src/folder` → `src/<package_name>`
 - Skip binary files in `replace_placeholders` to avoid `UnicodeDecodeError`

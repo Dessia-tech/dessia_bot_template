@@ -38,8 +38,8 @@ This template simplifies the process of starting a new Python project, allowing 
    - **Dependency Groups (PEP 735):**
     Development and test dependencies are managed via `[dependency-groups]`, natively supported by `uv`.
 
-   - **Example Test Cases Using unittest:**
-    Includes a set of example test cases to get you started with testing your package. The `test.py` script runs unittests and scripts with coverage reporting (text, HTML, XML) and enforces configurable coverage thresholds.
+   - **Example Test Cases:**
+    Includes a set of example test cases to get you started with testing your package. The `test.py` script runs unit tests through `pytest` and executes the scripts, with selective execution (`--unittests`, `--scripts`, `--modified-scripts`, `--coverage`), coverage reporting (text, HTML, XML, JSON), JUnit reports for the CI test widget, and configurable coverage thresholds.
 
    - **Customizable Package Metadata:**
     Easily customize your package's name, author information, descriptions, dependencies, and more through a configuration `.ini` inputs file.

@@ -16,6 +16,7 @@ dependencies = [
 
 [dependency-groups]
 test = [
+    "pytest",
     "coverage>=7.0",
     "tomli>=2.0",
 ]
@@ -60,15 +61,20 @@ skip = ["*.json", "*.html", "*.js", "*.css", "*.c", "*.h", "*.cpp", "*.hpp", "*.
 ignore-words-list = ["dessia"]  # words to ignore from codespell check
 
 [tool.coverage.run]
+core = "sysmon"  # use sys.monitoring (PEP 669) instead of sys.settrace
 source = ["src/{{PACKAGE_NAME}}"]  # source code directories
 
 [tool.coverage.report]
 omit = []  # modules to omit from coverage analysis
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-v"]
+
 [coverage]
-min_global_coverage = 90  # minimum global coverage percentage
-min_module_coverage = 80  # minimum coverage percentage for each module
-untracked_scripts = []  # not tested scripts (relative path to scripts directory)
+min_global_coverage = 70  # minimum global coverage percentage
+min_module_coverage = 65  # minimum coverage percentage for each module
+untracked_scripts = []  # not tested scripts (glob patterns, relative to the scripts directory)
 
 [tool.uv]
 required-environments = [
