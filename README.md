@@ -39,7 +39,9 @@ This template simplifies the process of starting a new Python project, allowing 
     Development and test dependencies are managed via `[dependency-groups]`, natively supported by `uv`.
 
    - **Example Test Cases:**
-    Includes a set of example test cases to get you started with testing your package. The `test.py` script runs unit tests through `pytest` and executes the scripts, with selective execution (`--unittests`, `--scripts`, `--modified-scripts`, `--coverage`), coverage reporting (text, HTML, XML, JSON), JUnit reports for the CI test widget, and configurable coverage thresholds.
+    Includes a set of example test cases to get you started with testing your package. The `test.py` script runs unit tests through `pytest` and executes the scripts, with selective execution (`--unittests`, `--scripts`, `--modified-scripts`, `--coverage`), coverage reporting (text, HTML, XML, JSON) and JUnit reports for the CI test widget.
+
+    Coverage measures the unit tests only. Scripts run without the coverage tracer, so the code they exercise does not count towards it — a script that fails still fails the job, but it contributes nothing to the percentage. The thresholds in `[coverage]` (`min_global_coverage`, `min_module_coverage`) default to 70 and 65 and should be read with that in mind.
 
    - **Customizable Package Metadata:**
     Easily customize your package's name, author information, descriptions, dependencies, and more through a configuration `.ini` inputs file.
@@ -155,14 +157,14 @@ MyPackage/
 │   └── script_2.py               # Utility script 2
 ├── tests/                        # Directory for unit tests
 │   ├── __init__.py               # Initialize test package
-│   └── test_example.py           # Example test file
+│   └── test_exemple.py           # Example test file
 ├── CHANGELOG.md                  # Changelog for tracking changes
 ├── README.md                     # Main documentation file
 ├── pyproject.toml                # Single source of truth: metadata, dependencies, tools, uv config
-├── test.py                       # Test script for running unittests and scripts with coverage
+├── test.py                       # Test runner: unit tests, scripts, coverage, JUnit reports
 ├── .gitlab/                      # GitLab configuration files and templates
-│   ├── issue_template.md         # Template for submitting issues
-│   └── merge_request_template.md # Template for merge requests
+│   ├── issue_templates/          # Template for submitting issues
+│   └── merge_request_templates/  # Template for merge requests
 ├── .gitlab-ci.yml                # GitLab CI/CD pipeline configuration (uses ci-templates)
 ├── .gitignore                    # Git ignore rules
 └── .pre-commit-config.yaml       # Pre-commit hooks configuration

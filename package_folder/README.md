@@ -52,21 +52,22 @@ Briefly describe the organization of the project's files and directories. Explai
 
 ```
 MyPackage/
-├── my_package/                   # Contains the core source code
-│   ├── __init__.py
-│   ├── core.py
-│   └── data3d.py
+├── src/
+│   └── my_package/               # Contains the core source code
+│       ├── __init__.py
+│       ├── core.py
+│       └── data3d.py
 ├── scripts/                      # Directory for utility scripts related to the package
 ├── workflows/                    # Directory for the different workflows used in the platform
 ├── tests/                        # Directory for unit tests
 ├── pyproject.toml                # Configuration file defining project metadata, dependencies, and tool-specific settings
-└── test.py                       # Test script for running unittests and scripts with coverage
+└── test.py                       # Test runner: unit tests, scripts, coverage, JUnit reports
 ```
 
 **Key Files:**
 
-*   `my_package/core.py`: This module contains different functions shared with different modules
-*   `my_package/data3d.py`: This module contains objects and functions related to importring 3D geometrical data
+*   `src/my_package/core.py`: This module contains different functions shared with different modules
+*   `src/my_package/data3d.py`: This module contains objects and functions related to importing 3D geometrical data
 
 -->
 
