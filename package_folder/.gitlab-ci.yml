@@ -27,8 +27,11 @@ check_pre_commit:
 #
 # TEST_SCRIPT spells out what is run:
 #   --unittests  pytest over tests/, reported in the merge request test widget (report.xml)
-#   --coverage   measures coverage and fails under the thresholds set in [coverage] (pyproject.toml)
-#   --scripts    runs every script in scripts/, except those listed in untracked_scripts
+#   --coverage   measures what the unit tests cover, and fails under the thresholds set in
+#                [coverage] (pyproject.toml). Scripts run without the coverage tracer, so the
+#                code they exercise does not count towards it.
+#   --scripts    runs every script in scripts/, except those listed in untracked_scripts.
+#                A script that exits non-zero fails the job (scripts-report.xml).
 #
 # INSTALL_GROUPS names the dependency group to install beside the package: test carries pytest.
 mr_tests:
