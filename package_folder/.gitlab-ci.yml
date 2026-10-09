@@ -10,6 +10,8 @@ include:
   - project: 'dessia/sdk/ci-templates'
     file: '/templates/install_test.yml'
   - project: 'dessia/sdk/ci-templates'
+    file: '/templates/mr_test.yml'
+  - project: 'dessia/sdk/ci-templates'
     file: '/templates/generate_dist_wheel.yml'
 
 
@@ -21,10 +23,14 @@ check_pre_commit:
   extends: .check_pre_commit
 
 
-install_run_scripts_and_unittests:
-  extends: .install_test
+# MR: all unit tests with coverage + all scripts (automatic, blocking)
+# INSTALL_GROUPS is restated because .mr_test clears it: the test group carries pytest.
+# TEST_SCRIPT overrides .mr_test's --modified-scripts default: every script runs on every push.
+mr_tests:
+  extends: .mr_test
   variables:
     INSTALL_GROUPS: "test"
+    TEST_SCRIPT: "test.py --unittests --coverage --scripts"
 
 
 generate_dist_wheel:
