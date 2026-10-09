@@ -65,11 +65,8 @@ packages_str = parameters["required_packages"]
 if packages_str and packages_str.strip():
     packages = [p.strip() for p in packages_str.split(",") if p.strip()]
     toml_packages = "\n".join(f'    "{p}",' for p in packages) + "\n"
-    package_names = [re.split(r"[><=~!;\[]", p)[0].strip() for p in packages]
-    exclude_newer_packages = "\n".join(f"{name} = false" for name in package_names) + "\n"
 else:
     toml_packages = ""
-    exclude_newer_packages = ""
 
 # Dictionary of placeholders to replace
 placeholders = {
@@ -83,7 +80,6 @@ placeholders = {
     "{{RUFF_TARGET_VERSION}}": ruff_target_version,
     "{{DATE}}": date.today().strftime("%d/%m/%Y") + " (Initialization)",
     "{{REQUIRED_PACKAGES_TOML}}": toml_packages,
-    "{{EXCLUDE_NEWER_PACKAGES_TOML}}": exclude_newer_packages,
 }
 
 

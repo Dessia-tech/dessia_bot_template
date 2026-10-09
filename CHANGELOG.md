@@ -13,8 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `src/` layout, with `pyproject.toml` as the single source of truth: full `[project]` section,
   `[dependency-groups]` (PEP 735) with a `test` group, `setuptools_scm` with a fallback version, and the
   ruff, pytest and coverage configuration
-- `[tool.uv]` configuration: `required-environments`, `prerelease`, `exclude-newer`, and an
-  `exclude-newer-package` table generated from the declared dependencies
+- `[tool.uv]` configuration: `required-environments`, `prerelease` and `exclude-newer`
 - CI from `dessia/sdk/ci-templates`: changelog, pre-commit, test and wheel jobs are now `extends:` of shared
   templates
 
@@ -43,8 +42,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - `setup.py`: `pyproject.toml` alone builds and installs the package
-- `[[tool.uv.index]]` from the generated `pyproject.toml`: indexes come from the CI, so a generated package stays
-  usable without access to the private registry
+- `[[tool.uv.index]]` and `[tool.uv.exclude-newer-package]` from the generated `pyproject.toml`: both describe the
+  Dessia infrastructure and come from the CI, or from the developer's own `uv` configuration, so a generated
+  package stays usable without access to the private registry
 - The `check_mr_approval` CI job: approval is enforced by the project's own GitLab settings
 
 
