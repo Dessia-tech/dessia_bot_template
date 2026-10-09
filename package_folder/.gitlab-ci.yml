@@ -23,9 +23,14 @@ check_pre_commit:
   extends: .check_pre_commit
 
 
-# MR: all unit tests with coverage + all scripts (automatic, blocking)
-# INSTALL_GROUPS is restated because .mr_test clears it: the test group carries pytest.
-# TEST_SCRIPT overrides .mr_test's --modified-scripts default: every script runs on every push.
+# Tests. Runs on every push to a merge request; a failure blocks the merge.
+#
+# TEST_SCRIPT spells out what is run:
+#   --unittests  pytest over tests/, reported in the merge request test widget (report.xml)
+#   --coverage   measures coverage and fails under the thresholds set in [coverage] (pyproject.toml)
+#   --scripts    runs every script in scripts/, except those listed in untracked_scripts
+#
+# INSTALL_GROUPS names the dependency group to install beside the package: test carries pytest.
 mr_tests:
   extends: .mr_test
   variables:
