@@ -204,7 +204,16 @@ def get_modified_scripts(diff_base: str | None = None) -> list[Path]:
         print(f"  WARNING: git diff failed: {result.stderr.strip()}")
         return []
 
-    return [Path(line) for line in result.stdout.strip().splitlines() if line.endswith(".py")]
+    modified = [Path(line) for line in result.stdout.strip().splitlines() if line.endswith(".py")]
+
+    # The diff is computed against a branch, the run happens in the working tree, and the two can
+    # disagree - a partial checkout, or a job that rewrites the workspace. Running a path that is
+    # not there fails with a confusing "No such file or directory" instead of naming the mismatch.
+    present = [script for script in modified if script.is_file()]
+    for script in modified:
+        if script not in present:
+            print(f"  WARNING: {script} is in the diff but not in the working tree, skipping.")
+    return present
 
 
 def run_modified_scripts(

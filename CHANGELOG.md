@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`--unittests`, `--scripts`, `--modified-scripts`, `--coverage`), JUnit reports (`report.xml`,
   `scripts-report.xml`) for the CI test widget, and glob matching for `untracked_scripts`
 - Scripts no longer contribute to coverage: `test.py` runs them without the coverage tracer
+- `test.py --modified-scripts` skips a script that is in the diff but absent from the working tree, naming it,
+  instead of failing on an opaque `No such file or directory` (ported from the `ci-templates` fixture runner)
 - Lower default coverage thresholds to `min_global_coverage = 70` / `min_module_coverage = 65`, aligned with
   `package-template`
 - `{{REQUIRED_PACKAGES}}` replaced by `{{REQUIRED_PACKAGES_TOML}}`: dependencies formatted as proper TOML array
