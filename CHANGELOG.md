@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Integrate CI templates from `dessia/sdk/ci-templates` in generated `.gitlab-ci.yml`
 - Update `package_folder/.pre-commit-config.yaml`: ruff `v0.15.0` (`ruff-check` hook), codespell `v2.4.1`, pre-commit-hooks `v6.0.0`
 - Add `{{EXCLUDE_NEWER_PACKAGES_TOML}}` placeholder: auto-generates `[tool.uv.exclude-newer-package]` from input dependencies
-- Update default dependencies: `dessia_common>=1.0.3`, `volmdlr>=0.21.1`, `plot_data>=0.27.6`
+- Update default dependencies: `dessia_common>=1.0.11`, `volmdlr>=0.22.5`, `plot_data>=0.27.8`
 - Update default `python_version` to `>=3.12`
 - Add `{{RUFF_TARGET_VERSION}}` placeholder: ruff `target-version` is now derived from `python_version`
 

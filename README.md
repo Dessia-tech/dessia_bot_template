@@ -110,7 +110,7 @@ Open the file `template_inputs.ini`, and fill in the following fields:
 | package_name     | my_package                                                                      |
 | short_description| A package that does awesome things                                              |
 | long_description | This package provides awesome features for awesome people.                      |
-| required_packages| dessia_common>=1.0.3, volmdlr>=0.21.1, plot_data>=0.27.6                        |
+| required_packages| dessia_common>=1.0.11, volmdlr>=0.22.5, plot_data>=0.27.8                        |
 | python_version   | >=3.12                                                                          |
 | author           | Operations-Team                                                                 |
 | email            | support@dessia.io                                                               |
