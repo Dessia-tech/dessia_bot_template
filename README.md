@@ -157,7 +157,7 @@ MyPackage/
 │   └── script_2.py               # Utility script 2
 ├── tests/                        # Directory for unit tests
 │   ├── __init__.py               # Initialize test package
-│   └── test_exemple.py           # Example test file
+│   └── test_example.py           # Example test file
 ├── CHANGELOG.md                  # Changelog for tracking changes
 ├── README.md                     # Main documentation file
 ├── pyproject.toml                # Single source of truth: metadata, dependencies, tools, uv config

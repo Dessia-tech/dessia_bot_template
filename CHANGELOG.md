@@ -39,8 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   instead of failing on an opaque `No such file or directory` (ported from the `ci-templates` fixture runner)
 - Lower default coverage thresholds to `min_global_coverage = 70` / `min_module_coverage = 65`, aligned with
   `package-template`
-- Update `README.md`: document that coverage measures the unit tests only, fix the example test file name and
-  the `.gitlab/` tree; the generated `README.md` example tree now shows the `src/` layout
+- Update `README.md`: document that coverage measures the unit tests only, and fix the `.gitlab/` tree; the
+  generated `README.md` example tree now shows the `src/` layout
+- Rename `tests/test_exemple.py` to `tests/test_example.py`
 - `{{REQUIRED_PACKAGES}}` replaced by `{{REQUIRED_PACKAGES_TOML}}`: dependencies formatted as proper TOML array
 - `create_package.py` updated for src layout: renames `src/folder` → `src/<package_name>`
 - Skip binary files in `replace_placeholders` to avoid `UnicodeDecodeError`
