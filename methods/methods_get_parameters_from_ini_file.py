@@ -84,7 +84,8 @@ def get_parameters_from_ini_file(ini_file: str) -> dict:
 
     required_packages = parameters["required_packages"]
     if not required_packages:
-        required_packages = ["dessia_common>=0.18.0, plot_data>=0.26.0"]
+        # Written back as a comma-separated string: create_package.py splits this value on commas.
+        parameters["required_packages"] = "dessia_common>=1.0.11, volmdlr>=0.22.5, plot_data>=0.27.8"
     else:
         validate_required_packages(required_packages)
 
