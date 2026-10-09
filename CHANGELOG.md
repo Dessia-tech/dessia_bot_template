@@ -10,54 +10,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Adopt `src/` layout: package source code moved to `src/<package_name>/`
-- Add full `[project]` section in `pyproject.toml` (name, version, description, authors, dependencies)
-- Add `[dependency-groups]` (PEP 735) with `test` group (`pytest`, `coverage`, `tomli`) in generated `pyproject.toml`
-- Add `[tool.pytest.ini_options]` (`testpaths`, `addopts`) and `core = "sysmon"` in `[tool.coverage.run]`
-- Add `fallback_version = "0.0.1"` in `[tool.setuptools_scm]` for environments without git or setuptools_scm
-- Add `[tool.setuptools.packages.find]` with `where = ["src"]` for src layout support
-- Add `[tool.uv]` configuration: `required-environments`, `prerelease`, `exclude-newer`, `[tool.uv.exclude-newer-package]`
-- Integrate CI templates from `dessia/sdk/ci-templates` in generated `.gitlab-ci.yml`
-- Update `package_folder/.pre-commit-config.yaml`: ruff `v0.15.0` (`ruff-check` hook), codespell `v2.4.1`, pre-commit-hooks `v6.0.0`
-- Add `{{EXCLUDE_NEWER_PACKAGES_TOML}}` placeholder: auto-generates `[tool.uv.exclude-newer-package]` from input dependencies
-- Update default dependencies: `dessia_common>=1.0.11`, `volmdlr>=0.22.5`, `plot_data>=0.27.8`
-- Update default `python_version` to `>=3.12`
-- Add `{{RUFF_TARGET_VERSION}}` placeholder: ruff `target-version` is now derived from `python_version`
+- `src/` layout, with `pyproject.toml` as the single source of truth: full `[project]` section,
+  `[dependency-groups]` (PEP 735) with a `test` group, `setuptools_scm` with a fallback version, and the
+  ruff, pytest and coverage configuration
+- `[tool.uv]` configuration: `required-environments`, `prerelease`, `exclude-newer`, and an
+  `exclude-newer-package` table generated from the declared dependencies
+- CI from `dessia/sdk/ci-templates`: changelog, pre-commit, test and wheel jobs are now `extends:` of shared
+  templates
 
 ### Changed
 
-- Replace inline CI jobs with `extends:` from ci-templates (verify changelog, pre-commit, dist wheel, install/test)
-- Rename `install_run_scripts_and_unittests` to `mr_tests` and extend `.mr_test`, with an explicit
-  `TEST_SCRIPT: "test.py --unittests --coverage --scripts"`: every script runs on every push, rather than
-  the `--modified-scripts` default of the upstream template
-- Migrate `test.py` to the runner from `dessia/sdk/experimental/templates/package-template` (doc build excluded,
-  since generated packages have no `doc/` folder): unit tests now run through `pytest`, with selective execution
-  (`--unittests`, `--scripts`, `--modified-scripts`, `--coverage`), JUnit reports (`report.xml`,
-  `scripts-report.xml`) for the CI test widget, and glob matching for `untracked_scripts`
-- Scripts no longer contribute to coverage: `test.py` runs them without the coverage tracer
-- `test.py --modified-scripts` skips a script that is in the diff but absent from the working tree, naming it,
-  instead of failing on an opaque `No such file or directory` (ported from the `ci-templates` fixture runner)
-- Lower default coverage thresholds to `min_global_coverage = 70` / `min_module_coverage = 65`, aligned with
-  `package-template`
-- Update `README.md`: document that coverage measures the unit tests only, and fix the `.gitlab/` tree; the
-  generated `README.md` example tree now shows the `src/` layout
-- Rename `tests/test_exemple.py` to `tests/test_example.py`
-- `{{REQUIRED_PACKAGES}}` replaced by `{{REQUIRED_PACKAGES_TOML}}`: dependencies formatted as proper TOML array
-- `create_package.py` updated for src layout: renames `src/folder` → `src/<package_name>`
-- Skip binary files in `replace_placeholders` to avoid `UnicodeDecodeError`
-- The fallback for an empty `required_packages` now reaches the generated package: it was assigned to a local
-  variable and never written back, so a package generated without dependencies silently got none, and its
-  value was a list where the rest of the code expects a comma-separated string
-- `replace_placeholders` leaves every generated file with exactly one trailing newline: a placeholder whose
-  value ends with a newline used to produce a trailing blank line, which `end-of-file-fixer` rewrites and which
-  would fail `check_pre_commit` on the generated project's first merge request
+- New defaults: Python `>=3.12`, `dessia_common>=1.0.11`, `volmdlr>=0.22.5`, `plot_data>=0.27.8`, and current
+  pre-commit hooks. Ruff's `target-version` is derived from `python_version` instead of being hardcoded
+- `test.py` is the runner from `dessia/sdk/experimental/templates/package-template`, minus the doc build: unit
+  tests run through `pytest`, execution is selective (`--unittests`, `--scripts`, `--modified-scripts`,
+  `--coverage`), and JUnit reports feed the merge request test widget
+- **Coverage measures the unit tests only.** Scripts run without the coverage tracer, so the code they exercise
+  no longer counts; default thresholds drop to `min_global_coverage = 70` / `min_module_coverage = 65`
+- The merge request job runs `test.py --unittests --coverage --scripts`: every test and every script, on every
+  push, blocking
+- `create_package.py` follows the src layout and formats dependencies as a TOML array
+- READMEs brought back in line with the template, and `tests/test_exemple.py` renamed to `tests/test_example.py`
+
+### Fixed
+
+- An empty `required_packages` falls back to the default dependencies, instead of generating a package with none
+- Generated files end with exactly one newline, so `check_pre_commit` no longer fails on a generated project's
+  first merge request
+- `test.py --modified-scripts` skips, and names, a script that is in the diff but absent from the working tree
+- Binary files are skipped when replacing placeholders
 
 ### Removed
 
-- Remove `setup.py`: `pyproject.toml` alone is enough to build and install the package
-- Remove `[[tool.uv.index]]` blocks from the generated `pyproject.toml`: indexes come from the CI (`UV_DEFAULT_INDEX`/`UV_INDEX`), keeping generated packages usable without access to the private registry
-- Remove the `check_mr_approval` CI job: no ci-templates job replaces it, so a generated project now relies on
-  its own GitLab settings (approval rules and "Pipelines must succeed") to gate merges
+- `setup.py`: `pyproject.toml` alone builds and installs the package
+- `[[tool.uv.index]]` from the generated `pyproject.toml`: indexes come from the CI, so a generated package stays
+  usable without access to the private registry
+- The `check_mr_approval` CI job: approval is enforced by the project's own GitLab settings
 
 
 ## [v2.0.0] - 04/05/2026
