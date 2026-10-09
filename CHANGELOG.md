@@ -45,6 +45,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `{{REQUIRED_PACKAGES}}` replaced by `{{REQUIRED_PACKAGES_TOML}}`: dependencies formatted as proper TOML array
 - `create_package.py` updated for src layout: renames `src/folder` → `src/<package_name>`
 - Skip binary files in `replace_placeholders` to avoid `UnicodeDecodeError`
+- `replace_placeholders` leaves every generated file with exactly one trailing newline: a placeholder whose
+  value ends with a newline used to produce a trailing blank line, which `end-of-file-fixer` rewrites and which
+  would fail `check_pre_commit` on the generated project's first merge request
 
 ### Removed
 

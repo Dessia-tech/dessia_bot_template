@@ -39,6 +39,11 @@ def replace_placeholders(_file_path: str, _placeholders: dict) -> None:
         return  # Skip binary files
     for placeholder, value in _placeholders.items():
         content = content.replace(placeholder, value)
+    # A placeholder expanding to text that already ends with a newline, sitting on the last line of a
+    # template, leaves the file with a trailing blank line. pre-commit's end-of-file-fixer rewrites it
+    # and fails check_pre_commit on the generated project's first merge request.
+    if content:
+        content = content.rstrip("\n") + "\n"
     with open(_file_path, "w", encoding="utf-8") as file:
         file.write(content)
 
