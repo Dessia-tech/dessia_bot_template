@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Replace inline CI jobs with `extends:` from ci-templates (verify changelog, pre-commit, dist wheel, install/test)
+- Rename `install_run_scripts_and_unittests` to `mr_tests` and extend `.mr_test`, with an explicit
+  `TEST_SCRIPT: "test.py --unittests --coverage --scripts"`: every script runs on every push, rather than
+  the `--modified-scripts` default of the upstream template
 - Migrate `test.py` to the runner from `dessia/sdk/experimental/templates/package-template` (doc build excluded,
   since generated packages have no `doc/` folder): unit tests now run through `pytest`, with selective execution
   (`--unittests`, `--scripts`, `--modified-scripts`, `--coverage`), JUnit reports (`report.xml`,
@@ -44,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove `setup.py`: `pyproject.toml` alone is enough to build and install the package
 - Remove `[[tool.uv.index]]` blocks from the generated `pyproject.toml`: indexes come from the CI (`UV_DEFAULT_INDEX`/`UV_INDEX`), keeping generated packages usable without access to the private registry
+- Remove the `check_mr_approval` CI job: no ci-templates job replaces it, so a generated project now relies on
+  its own GitLab settings (approval rules and "Pipelines must succeed") to gate merges
 
 
 ## [v2.0.0] - 04/05/2026
