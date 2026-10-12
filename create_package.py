@@ -1,6 +1,7 @@
 """Script to generate a new Python package from a template directory."""
 
 import os
+import re
 import shutil
 import subprocess
 from datetime import date
@@ -20,9 +21,9 @@ new_package_dir = f'../{parameters["project_package_name"]}'
 # Copy the template directory to a new location
 shutil.copytree(template_dir, new_package_dir)
 
-# Rename the package folder
-old_folder = f'../{parameters["project_package_name"]}/folder'
-new_folder = f'../{parameters["project_package_name"]}/' + parameters["package_name"]
+# Rename the package folder (src layout: src/folder -> src/<package_name>)
+old_folder = f'../{parameters["project_package_name"]}/src/folder'
+new_folder = f'../{parameters["project_package_name"]}/src/' + parameters["package_name"]
 os.rename(old_folder, new_folder)
 
 # %% Updates the files
@@ -31,13 +32,41 @@ os.rename(old_folder, new_folder)
 # Function to replace placeholders in a file
 def replace_placeholders(_file_path: str, _placeholders: dict) -> None:
     """Replace placeholders in a file with the corresponding values."""
-    with open(_file_path, encoding="utf-8") as file:
-        content = file.read()
+    try:
+        with open(_file_path, encoding="utf-8") as file:
+            content = file.read()
+    except UnicodeDecodeError:
+        return  # Skip binary files
     for placeholder, value in _placeholders.items():
         content = content.replace(placeholder, value)
+    # A placeholder expanding to text that already ends with a newline, sitting on the last line of a
+    # template, leaves the file with a trailing blank line. pre-commit's end-of-file-fixer rewrites it
+    # and fails check_pre_commit on the generated project's first merge request.
+    if content:
+        content = content.rstrip("\n") + "\n"
     with open(_file_path, "w", encoding="utf-8") as file:
         file.write(content)
 
+
+# Derive ruff's target-version from the required python version (">=3.12" -> "py312")
+python_version_match = re.search(r"(\d+)\.(\d+)", parameters["python_version"])
+if python_version_match:
+    ruff_target_version = f"py{python_version_match.group(1)}{python_version_match.group(2)}"
+else:
+    ruff_target_version = "py312"
+    print(
+        f"WARNING: could not parse python_version '{parameters['python_version']}', "
+        f"falling back to ruff target-version '{ruff_target_version}'."
+    )
+
+
+# Format required_packages as a TOML array for pyproject.toml
+packages_str = parameters["required_packages"]
+if packages_str and packages_str.strip():
+    packages = [p.strip() for p in packages_str.split(",") if p.strip()]
+    toml_packages = "\n".join(f'    "{p}",' for p in packages) + "\n"
+else:
+    toml_packages = ""
 
 # Dictionary of placeholders to replace
 placeholders = {
@@ -48,8 +77,9 @@ placeholders = {
     "{{AUTHOR}}": parameters["author"],
     "{{CONTACT}}": parameters["email"],
     "{{VERSION}}": parameters["python_version"],
+    "{{RUFF_TARGET_VERSION}}": ruff_target_version,
     "{{DATE}}": date.today().strftime("%d/%m/%Y") + " (Initialization)",
-    "{{REQUIRED_PACKAGES}}": parameters["required_packages"],
+    "{{REQUIRED_PACKAGES_TOML}}": toml_packages,
 }
 
 
