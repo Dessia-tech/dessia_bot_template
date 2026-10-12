@@ -33,9 +33,9 @@ This template simplifies the process of starting a new Python project, allowing 
     Uses `setuptools_scm` to derive the package version from git tags. A `fallback_version` is configured to ensure wheel builds work even when git or `setuptools_scm` is unavailable (e.g. on client environments).
 
    - **`uv` Package Manager Support:**
-    The generated package is pre-configured for `uv` with `required-environments`, `prerelease` handling, and `exclude-newer` protection against recent supply chain attacks.
+    The generated package declares the `required-environments` the SDK wheels need, so `uv` resolves for Linux and Windows regardless of the machine it runs on.
 
-    What is specific to the Dessia infrastructure is deliberately kept out of the generated `pyproject.toml`, so the package stays usable by someone without access to the private registry: the package indexes and the `exclude-newer-package` exemptions for the internal SDK packages come from the CI (`UV_DEFAULT_INDEX`/`UV_INDEX` and `.uv_setup` in the `ci-templates` `common.yml`), and locally from the developer's own `uv` configuration (`~/.config/uv/uv.toml`, or `%APPDATA%\uv` on Windows).
+    The resolution policy itself is deliberately kept out of the generated `pyproject.toml`, so the package stays usable by someone without access to the private registry: the package indexes, `prerelease` handling and the `exclude-newer` supply chain protection -- together with the exemptions that keep the internal SDK packages installable the day they are released -- come from the CI (`UV_DEFAULT_INDEX`/`UV_INDEX` and `.uv_setup` in the `ci-templates` `common.yml`), and locally from the developer's own `uv` configuration (`~/.config/uv/uv.toml`, or `%APPDATA%\uv` on Windows). That configuration is part of setting up a development machine, next to the GitLab token.
 
    - **Dependency Groups (PEP 735):**
     Development and test dependencies are managed via `[dependency-groups]`, natively supported by `uv`.
